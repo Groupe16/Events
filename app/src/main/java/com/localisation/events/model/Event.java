@@ -12,6 +12,7 @@ import java.util.Vector;
 public class Event {
     private int id;
     private String name;
+    private String description;
     private Place place;
     private Date startDate, endDate;
     private Time startTime, endTime;
@@ -43,6 +44,14 @@ public class Event {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Place getPlace() {

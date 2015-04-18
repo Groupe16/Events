@@ -11,10 +11,13 @@ import java.util.Vector;
 public class User {
     private int id;
     private String firstName, lastName;
+    private String city;
     private Date bDate;
     private Vector<Theme> interest;
     private Vector<Event> organizedEvents, futureEvents, pastEvents;
     private Vector<Invitation> invitations;
+    private Vector<User> friends;
+    private Vector<FriendRequest> friendRequests;
     private Image avatar;
 
 
@@ -49,6 +52,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public Date getbDate() {
@@ -97,6 +108,22 @@ public class User {
 
     public void setInvitations(Vector<Invitation> invitations) {
         this.invitations = invitations;
+    }
+
+    public Vector<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Vector<User> friends) {
+        this.friends = friends;
+    }
+
+    public Vector<FriendRequest> getFriendRequests() {
+        return friendRequests;
+    }
+
+    public void setFriendRequests(Vector<FriendRequest> friendRequests) {
+        this.friendRequests = friendRequests;
     }
 
     public Image getAvatar() {
