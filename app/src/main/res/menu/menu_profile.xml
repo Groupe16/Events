@@ -1,0 +1,39 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.localisation.events.ProfileActivity"
+    android:id="@+id/menu_layout">
+
+    <item android:title="@string/search"
+
+        android:icon="@drawable/action_search"
+        android:id="@+id/action_search"/>
+
+    <!--group>
+    <item android:id="@+id/action_profile"
+        android:title="Profil"
+        android:orderInCategory="10" />
+    <item android:id="@+id/action_notifications"
+        android:title="Notifications"
+        android:orderInCategory="20" />
+    </group>
+    <group>
+    <item android:id="@+id/action_explore"
+        android:title="Explorer"
+        android:orderInCategory="30" />
+    <item android:id="@+id/action_create"
+        android:title="Créer un événement"
+        android:orderInCategory="40" />
+    <item android:id="@+id/action_events"
+        android:title="Evénements"
+        android:orderInCategory="50" />
+    <item android:id="@+id/action_past"
+        android:title="Evénements passés"
+        android:orderInCategory="60" />
+    <!- -item android:id="@+id/action_"
+        android:title=""
+        android:orderInCategory="0" /-->
+    <!--/group>
+    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+        android:orderInCategory="100" app:showAsAction="never" /-->
+</menu>

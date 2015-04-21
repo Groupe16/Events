@@ -16,6 +16,54 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RegistrationActivity"
+            android:label="@string/title_activity_registration"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.localisation.events.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_profil" >
+        </activity>
+        <activity
+            android:name=".ExploreActivity"
+            android:label="@string/title_activity_explore" >
+        </activity>
+        <activity
+            android:name=".CreateEventActivity"
+            android:label="@string/title_activity_create_event" >
+        </activity>
+        <activity
+            android:name=".EventActivity"
+            android:label="@string/title_activity_event" >
+        </activity>
+        <activity
+            android:name=".InvitationsMapActivity"
+            android:label="@string/title_activity_invitations_map" >
+        </activity>
+        <activity
+            android:name=".InvitationActivity"
+            android:label="@string/title_activity_invitation" >
+        </activity>
+        <activity
+            android:name=".EventsActivity"
+            android:label="@string/title_activity_events" >
+        </activity>
+        <activity
+            android:name=".FriendRequestActivity"
+            android:label="@string/title_activity_friend_request" >
+        </activity>
+        <activity
+            android:name=".NotificationActivity"
+            android:label="@string/title_activity_notification" >
+        </activity>
+        <activity
+            android:name=".InvitationsActivity"
+            android:label="@string/title_activity_invitations" >
+        </activity>
     </application>
 
 </manifest>

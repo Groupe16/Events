@@ -13,6 +13,7 @@ public class Event {
     private int id;
     private String name;
     private String description;
+    private boolean visibility;
     private Place place;
     private Date startDate, endDate;
     private Time startTime, endTime;
@@ -124,5 +125,13 @@ public class Event {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public boolean isVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(boolean visibility) {
+        this.visibility = visibility;
     }
 }

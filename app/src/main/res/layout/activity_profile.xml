@@ -1,0 +1,33 @@
+<android.support.v4.widget.DrawerLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:id="@+id/menu_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- The LinearLayout consumes the entire space available using match_parent in both dimensions. -->
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/time_zone_current_time"
+        android:text="@string/hello_world"/>
+
+    </LinearLayout>
+
+    <!-- The menu elements ListView. -->
+
+    <ListView
+        android:layout_height="match_parent"
+        android:layout_width="200dp"
+        android:id="@+id/menu_elements"
+        android:dividerHeight="0dp"
+        android:divider="@android:color/transparent"
+        android:choiceMode="singleChoice"
+        android:background="#123"
+        android:layout_gravity="start"/>
+
+</android.support.v4.widget.DrawerLayout>
