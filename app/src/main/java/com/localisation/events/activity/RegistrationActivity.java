@@ -1,9 +1,11 @@
-package com.localisation.events;
+package com.localisation.events.activity;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.localisation.events.R;
 
 //pour s'inscrire
 public class RegistrationActivity extends ActionBarActivity {

@@ -2,13 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.localisation.events" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,53 +24,62 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".activity.RegistrationActivity"
             android:label="@string/title_activity_registration"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".activity.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.localisation.events.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activity.ProfileActivity"
             android:label="@string/title_activity_profil" >
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAUIPkGFcmJqBZ1LthjMO_Qxu0wUV-iCdM" />
+
         <activity
-            android:name=".ExploreActivity"
+            android:name=".activity.ExploreActivity"
             android:label="@string/title_activity_explore" >
         </activity>
         <activity
-            android:name=".CreateEventActivity"
+            android:name=".activity.CreateEventActivity"
             android:label="@string/title_activity_create_event" >
         </activity>
         <activity
-            android:name=".EventActivity"
+            android:name=".activity.EventActivity"
             android:label="@string/title_activity_event" >
         </activity>
         <activity
-            android:name=".InvitationsMapActivity"
-            android:label="@string/title_activity_invitations_map" >
-        </activity>
-        <activity
-            android:name=".InvitationActivity"
+            android:name=".activity.InvitationActivity"
             android:label="@string/title_activity_invitation" >
         </activity>
         <activity
-            android:name=".EventsActivity"
+            android:name=".activity.EventsActivity"
             android:label="@string/title_activity_events" >
         </activity>
         <activity
-            android:name=".FriendRequestActivity"
+            android:name=".activity.FriendRequestActivity"
             android:label="@string/title_activity_friend_request" >
         </activity>
         <activity
-            android:name=".NotificationActivity"
+            android:name=".activity.NotificationActivity"
             android:label="@string/title_activity_notification" >
         </activity>
         <activity
-            android:name=".InvitationsActivity"
+            android:name=".activity.InvitationsActivity"
             android:label="@string/title_activity_invitations" >
         </activity>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+
     </application>
 
 </manifest>

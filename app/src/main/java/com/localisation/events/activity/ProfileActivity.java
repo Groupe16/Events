@@ -1,32 +1,22 @@
-package com.localisation.events;
+package com.localisation.events.activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import com.localisation.events.R;
+import com.localisation.events.menu.SlideMenu;
+import com.localisation.events.adapter.MenuAdapter;
 
 //pour afficher le profil de l'utilisateur
 public class ProfileActivity extends ActionBarActivity {
@@ -36,39 +26,38 @@ public class ProfileActivity extends ActionBarActivity {
     private ActionBarDrawerToggle menuToggle; //Gère l'ouverture et la fermeture du menu
 
     private CharSequence menuTitle = "Menu";
-    private CharSequence activityTitle = "DroiDev : Slide Menu Tuto";
-
-    ArrayList<String> TZIDs = new ArrayList<String>();
-    public final String DATE_FORMAT = "yyyy-MM-dd' 'hh:mm' 'Z";
+    private CharSequence activityTitle = "Profil";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        SlideMenu slideMenu = new SlideMenu(this);
+        menuLayout = slideMenu.getMenuLayout();
+        menuElementsList = slideMenu.getMenuElementsList();
+        menuToggle = slideMenu.getMenuToggle();
+        menuTitle = slideMenu.getMenuTitle();
+        activityTitle = slideMenu.getActivityTitle();
+
+        //activation du bouton home
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.ic_drawer);
+        //createSlideMenu();
+    }
+
+    private void createSlideMenu() {
+
         //recupèration du layout et la liste
         menuLayout = (DrawerLayout) findViewById(R.id.menu_layout);
         menuElementsList = (ListView) findViewById(R.id.menu_elements);
 
-        //direction grauche -> droite  //même valeur que celle spécifiée en XML dans la ListView (android:layout_gravity="start")
+        //direction grauche -> droite  //même valeur que celle spécifiée en
+        // XML dans la ListView (android:layout_gravity="start")
         menuLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-
-        // Get TimeZone List
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
-                this, R.layout.element_menu);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        String[] TZ = TimeZone.getAvailableIDs();
-
-        for (int i = 0; i < TZ.length; i++) {
-            if (!(TZIDs.contains(TimeZone.getTimeZone(TZ[i]).getDisplayName()))) {
-                TZIDs.add(TimeZone.getTimeZone(TZ[i]).getDisplayName());
-            }
-        }
-
-        for (int i = 0; i < TZIDs.size(); i++) {
-            adapter.add(TZIDs.get(i));
-        }
+        final MenuAdapter adapter = new MenuAdapter(this);
 
         //adapter pour ajouter les éléments
         menuElementsList.setAdapter(adapter);
@@ -98,21 +87,16 @@ public class ProfileActivity extends ActionBarActivity {
             }
         };
         menuLayout.setDrawerListener(menuToggle);
-
-
         //clic des éléments du menu
         menuElementsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position,long id) {
-                //... Faites ce que vous désirez suite au clic sur l’élément ayant comme index "position"...
+
+                Intent intent = new Intent(ProfileActivity.this, adapter.getAction(position));
+                startActivity(intent);
+
             }
         });
-// If Application just started select Current TimeZone
-        if (savedInstanceState == null) {
-            Calendar calendar = Calendar.getInstance();
-            String timezone = calendar.getTimeZone().getID();
-            convert(timezone);
-        }
     }
 
     @Override
@@ -134,86 +118,30 @@ public class ProfileActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        // ActionBarDrawerToggle will take care of this.
-        if (menuToggle.onOptionsItemSelected(item)) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
             return true;
         }
-        /*switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            case R.id.action_profile:
-                return true;
-            case R.id.action_notifications:
-                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-                startActivity(intent);
-            default:*/
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                Toast.makeText(this, R.string.search, Toast.LENGTH_LONG).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+
+        return super.onOptionsItemSelected(item);
     }
 
-    private class DrawerItemClickListener implements
-            ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            selectItem(position);
-        }
-    }
-
-    private void selectItem(int position) {
-        convert(TZIDs.get(position));
-        // update selected item and title, then close the drawer
-        menuElementsList.setItemChecked(position, true);
-        setTitle(TZIDs.get(position));
-        menuLayout.closeDrawer(menuElementsList);
-    }
-
-    private void convert(String timezone) {
-        TextView outputDateTime = (TextView) findViewById(R.id.time_zone_current_time);
-        String out = ChangeTimeZone(timezone);
-        outputDateTime.setText(out);
-
-    };
-
-    private Date getDateFromString(String inputDateTime) {
-        DateFormat formater = new SimpleDateFormat(DATE_FORMAT);
-        Date inputDate = null;
-        try {
-            inputDate = formater.parse(inputDateTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return inputDate;
-    }
-
-    private String ChangeTimeZone( String timezone) {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-        String currentDateandTime = sdf.format(new Date());
-        Date inputeDateTime = getDateFromString(currentDateandTime);
-
-        DateFormat formater = new SimpleDateFormat(DATE_FORMAT);
-        formater.setTimeZone(TimeZone.getTimeZone(timezone));
-        String newDateTime = formater.format(inputeDateTime);
-        return newDateTime;
-    }
 
     @Override
     public void setTitle(CharSequence title) {
         activityTitle = title;
-        getActionBar().setTitle(activityTitle);
+        getSupportActionBar().setTitle(activityTitle);
     }
 
     /**
      * When using the ActionBarDrawerToggle, you must call it during
      * onPostCreate() and onConfigurationChanged()...
      */
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);

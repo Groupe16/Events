@@ -3,7 +3,7 @@
 
     <string name="app_name">Events</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Paramètres</string>
+    <string name="action_settings">Settings</string>
     <string name="title_activity_registration">Inscription</string>
     <string name="title_activity_profil">Profil</string>
     <string name="drawer_open">Open menu</string>
@@ -18,5 +18,7 @@
     <string name="title_activity_friend_request">Demande d\'ami</string>
     <string name="title_activity_notification">NotificationActivity</string>
     <string name="title_activity_invitations">InvitationsActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="hello_blank_fragment">Maps fragment</string>
 
 </resources>
