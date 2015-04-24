@@ -4,7 +4,7 @@ package com.localisation.events.model;
  * Created by Zalila on 2015-03-29.
  */
 public class Coord {
-    private double longitude, latutide, altitude;
+    private double longitude, latitude, altitude;
 
     public static Coord getCoord(){
         Coord coord = new Coord();
@@ -20,12 +20,12 @@ public class Coord {
         this.longitude = longitude;
     }
 
-    public double getLatutide() {
-        return latutide;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLatutide(double latutide) {
-        this.latutide = latutide;
+    public void setLatitude(double latutide) {
+        this.latitude = latutide;
     }
 
     public double getAltitude() {

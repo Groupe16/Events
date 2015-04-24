@@ -3,6 +3,7 @@ package com.localisation.events.model;
 import android.media.Image;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.Vector;
 
 /**
@@ -16,16 +17,17 @@ public class User {
     private Vector<Theme> interest;
     private Vector<Event> organizedEvents, futureEvents, pastEvents;
     private Vector<Invitation> invitations;
-    private Vector<User> friends;
-    private Vector<FriendRequest> friendRequests;
-    private Image avatar;
+    private String login;
+    private String password;
+    private String device;
+    private Time lastConnection;
 
 
-    public boolean addTheme(Theme theme){
+    public boolean addTheme(Theme theme) {
         return this.interest.add(theme);
     }
 
-    public boolean createEvent(Event event){
+    public boolean createEvent(Event event) {
         event.addOrganizer(this);
         return this.organizedEvents.add(event);
     }
@@ -108,29 +110,5 @@ public class User {
 
     public void setInvitations(Vector<Invitation> invitations) {
         this.invitations = invitations;
-    }
-
-    public Vector<User> getFriends() {
-        return friends;
-    }
-
-    public void setFriends(Vector<User> friends) {
-        this.friends = friends;
-    }
-
-    public Vector<FriendRequest> getFriendRequests() {
-        return friendRequests;
-    }
-
-    public void setFriendRequests(Vector<FriendRequest> friendRequests) {
-        this.friendRequests = friendRequests;
-    }
-
-    public Image getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(Image avatar) {
-        this.avatar = avatar;
     }
 }

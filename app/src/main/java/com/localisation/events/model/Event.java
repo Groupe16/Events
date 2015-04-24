@@ -20,7 +20,9 @@ public class Event {
     private Theme theme;
     private Vector<User> organizers;
     private Vector<User> participants;
-    private Image image;
+    private String place_name;
+    private String address;
+    private Coord coord;
 
     public boolean sendInvitation(Vector<User> users, Invitation invitation){
         invitation.setEvent(this);
@@ -119,19 +121,35 @@ public class Event {
         this.participants = participants;
     }
 
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
-
     public boolean isVisibility() {
         return visibility;
     }
 
     public void setVisibility(boolean visibility) {
         this.visibility = visibility;
+    }
+
+    public String getPlaceName() {
+        return place_name;
+    }
+
+    public void setPlaceName(String name) {
+        this.place_name = name;
+    }
+
+    public Coord getCoord() {
+        return coord;
+    }
+
+    public void setCoord(Coord coord) {
+        this.coord = coord;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
