@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/conn_Email"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="149dp" />
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/editText2"
+        android:id="@+id/conn_Pass"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
@@ -30,7 +30,7 @@
         android:text="Inscription"
         android:id="@+id/registerButton"
         android:layout_marginTop="63dp"
-        android:layout_below="@+id/editText2"
+        android:layout_below="@+id/conn_Pass"
         android:layout_toLeftOf="@+id/cxnButton"
         android:layout_toStartOf="@+id/cxnButton"
         android:onClick="registrationClick"
@@ -42,8 +42,8 @@
         android:text="Connexion"
         android:id="@+id/cxnButton"
         android:layout_alignTop="@+id/registerButton"
-        android:layout_alignRight="@+id/editText2"
-        android:layout_alignEnd="@+id/editText2"
+        android:layout_alignRight="@+id/conn_Pass"
+        android:layout_alignEnd="@+id/conn_Pass"
         android:onClick="testClick"
         />
 
@@ -53,9 +53,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="E-mail:"
         android:id="@+id/emailTextView"
-        android:layout_alignBottom="@+id/editText"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText"
+        android:layout_alignBottom="@+id/conn_Email"
+        android:layout_alignLeft="@+id/conn_Email"
+        android:layout_alignStart="@+id/conn_Email"
         android:layout_marginBottom="41dp" />
 
     <TextView
@@ -64,7 +64,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Mot De Passe:"
         android:id="@+id/pwdTextView"
-        android:layout_above="@+id/editText2"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_alignStart="@+id/editText2" />
+        android:layout_above="@+id/conn_Pass"
+        android:layout_alignLeft="@+id/conn_Pass"
+        android:layout_alignStart="@+id/conn_Pass" />
 </RelativeLayout>
