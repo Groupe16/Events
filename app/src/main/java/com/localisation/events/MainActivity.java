@@ -1,7 +1,11 @@
 package com.localisation.events;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.localisation.events.model.OnTaskCompleted;
+import com.localisation.events.model.User;
 
 
 //page de login
@@ -30,6 +35,7 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
     private static final String url = "jdbc:mysql://android.safe.ca:3306/events";
     private static final String user = "Vincent";
     private static final String pass = "test";
+    private static int client_id = 0;
 
 
     /** Called when the activity is first created. */
@@ -84,14 +90,33 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
 
                 String result = "Database connection success\n";
                 Statement st = MainActivity.conn.createStatement();
-                ResultSet rs = st.executeQuery("select user_id from User where email = '" + _email + "' AND password = '" + _password + "';");
+                String query = "select * from User where email = '" + _email + "' AND password = '" + _password + "';";
+                ResultSet rs = st.executeQuery(query);
                 ResultSetMetaData rsmd = rs.getMetaData();
 
                 while(rs.next()) {
-                    result += rsmd.getColumnName(1) + ": " + rs.getInt(1) + "\n";
+                    if(ProfileActivity.myself == null) {
+                        ProfileActivity.myself = new User();
+                    }
+                    ProfileActivity.myself.setId(rs.getInt("user_id"));
+                    client_id =  ProfileActivity.myself.getId();
+                    ProfileActivity.myself.setFirstName(rs.getString("first_name"));
+                    ProfileActivity.myself.setLastName(rs.getString("last_name"));
+                    ProfileActivity.myself.setbDate(rs.getDate("bDate"));
+                    ProfileActivity.myself.setLogin(rs.getString("login"));
+                    ProfileActivity.myself.setPassword(rs.getString("password"));
+                    ProfileActivity.myself.setDevice(rs.getString("device"));
+                    ProfileActivity.myself.setCity(rs.getString("city"));
+                    ProfileActivity.myself.setEmail(rs.getString("email"));
                 }
-                Log.v(null, result);
-                resultMessage = result;
+                if(client_id == 0)
+                {
+                    throw new Exception("Invalid client ID");
+                }
+
+                query = "update User SET last_connection=now() WHERE user_id=' " + ProfileActivity.myself.getId() + "';";
+                boolean statementSuccess = st.execute(query);
+
                 success = true;
             }
             catch(Exception e) {
@@ -129,17 +154,33 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
     }
 
     public void testClick(View view){
-        EditText mPass   = (EditText)findViewById(R.id.conn_Pass);
-        EditText mEmail  = (EditText)findViewById(R.id.conn_Email);
-        AsyncConnectToDB asyncConnect=new AsyncConnectToDB();
-        asyncConnect.LinkTask(this);
-        asyncConnect.InsertData(mEmail.toString(), mPass.toString());
-        asyncConnect.execute();
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if(activeNetworkInfo != null && activeNetworkInfo.isConnected())
+        {
+            EditText mPass = (EditText) findViewById(R.id.conn_Pass);
+            EditText mEmail = (EditText) findViewById(R.id.conn_Email);
+            AsyncConnectToDB asyncConnect = new AsyncConnectToDB();
+            asyncConnect.LinkTask(this);
+            asyncConnect.InsertData(mEmail.getText().toString(), mPass.getText().toString());
+            asyncConnect.execute();
+        }
+        else if(client_id != 0)
+        {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            intent.putExtra("CLIENT_ID", client_id);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "L'application n'a actuellement pas de connection, et aucune session n'a pas été sauvegardé.", Toast.LENGTH_LONG).show();
+        }
 
     }
 
     public void registrationClick(View view){
         Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+
         startActivity(intent);
     }
 
@@ -148,6 +189,7 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         if(success)
         {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            intent.putExtra("CLIENT_ID", client_id);
             startActivity(intent);
         }
         else
