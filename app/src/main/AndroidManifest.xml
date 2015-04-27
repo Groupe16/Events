@@ -41,7 +41,7 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.localisation.events.MainActivity" />
+                android:value="com.localisation.events.activity.MainActivity" />
         </activity>
         <activity
             android:name=".ProfileActivity"
