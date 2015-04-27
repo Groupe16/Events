@@ -2,6 +2,7 @@ package com.localisation.events;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.provider.ContactsContract;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -20,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.localisation.events.model.User;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,6 +34,7 @@ import java.util.TimeZone;
 //pour afficher le profil de l'utilisateur
 public class ProfileActivity extends ActionBarActivity {
 
+    public static User myself = null;
     private DrawerLayout menuLayout; //Layout Principal
     private ListView menuElementsList; //Menu
     private ActionBarDrawerToggle menuToggle; //Gère l'ouverture et la fermeture du menu
