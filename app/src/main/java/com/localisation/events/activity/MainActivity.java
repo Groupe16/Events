@@ -6,6 +6,7 @@ import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.localisation.events.*;
 import com.localisation.events.activity.ProfileActivity;
+import com.localisation.events.model.Coord;
 import com.localisation.events.model.OnTaskCompleted;
 import com.localisation.events.model.User;
 
@@ -44,24 +46,23 @@ import com.localisation.events.model.User;
 
 //page de login
 public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
-
+    private User myself = null;
     public static Connection conn = null;
-
+    public static boolean canGetLocation = false;
     private static final String url = "jdbc:mysql://android.safe.ca:3306/events";
     private static final String user = "Vincent";
     private static final String pass = "test";
     private static int client_id = 0;
-
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //GPSLocation GPSLocator = new GPSLocation(this, null);
     }
 
-    private class AsyncConnectToDB extends AsyncTask<Void, Integer, Void>
+    private class AsyncConnectToDB extends AsyncTask<Void, Integer, Void> implements LocationListener
     {
         private String _email = null;
         private String _password = null;
@@ -110,19 +111,20 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                 ResultSetMetaData rsmd = rs.getMetaData();
 
                 while(rs.next()) {
-                    if(ProfileActivity.myself == null) {
-                        ProfileActivity.myself = new User();
+                    if(myself == null) {
+                        myself = new User();
                     }
-                    ProfileActivity.myself.setId(rs.getInt("user_id"));
-                    client_id =  ProfileActivity.myself.getId();
-                    ProfileActivity.myself.setFirstName(rs.getString("first_name"));
-                    ProfileActivity.myself.setLastName(rs.getString("last_name"));
-                    ProfileActivity.myself.setbDate(rs.getDate("bDate"));
-                    ProfileActivity.myself.setLogin(rs.getString("login"));
-                    ProfileActivity.myself.setPassword(rs.getString("password"));
-                    ProfileActivity.myself.setDevice(rs.getString("device"));
-                    ProfileActivity.myself.setCity(rs.getString("city"));
-                    ProfileActivity.myself.setEmail(rs.getString("email"));
+                    myself.setId(rs.getInt("user_id"));
+                    client_id =  myself.getId();
+                    myself.setFirstName(rs.getString("first_name"));
+                    myself.setLastName(rs.getString("last_name"));
+                    myself.setbDate(rs.getDate("bDate"));
+                    myself.setLogin(rs.getString("login"));
+                    myself.setPassword(rs.getString("password"));
+                    myself.setDevice(rs.getString("device"));
+                    myself.setCity(rs.getString("city"));
+                    myself.setEmail(rs.getString("email"));
+                    myself.setPhone(rs.getString("telephone"));
                 }
                 if(client_id == 0)
                 {
@@ -130,25 +132,96 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                 }
                 double latitude = 0.0;
                 double longitude = 0.0;
-                LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                Criteria criteria = new Criteria();
-                String provider= locationManager.getBestProvider(criteria, false);
-                if(provider!= null && !provider.equals("")) {
-                    List<Address> addresses = null;
-                    Geocoder geoCoder = new Geocoder(MainActivity.this);
-                    try {
-                        Location lastLoc = locationManager.getLastKnownLocation(provider);
-                        new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude());
+                Location location = null;
+                LocationManager locationManager;
+                boolean isGPSEnabled;
+                boolean isNetworkEnabled;
+                long MIN_TIME_BW_UPDATES = 10;
+                long MIN_DISTANCE_CHANGE_FOR_UPDATES =  10;
+                Context mContext = getApplicationContext();
+                try {
+                    locationManager = (LocationManager) mContext
+                            .getSystemService(LOCATION_SERVICE);
+
+                    // getting GPS status
+                    isGPSEnabled = locationManager
+                            .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+                    // getting network status
+                    isNetworkEnabled = locationManager
+                            .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+                    if (!isGPSEnabled && !isNetworkEnabled) {
+                        // no network provider is enabled
+                    } else {
+                        MainActivity.canGetLocation = true;
+
+                        if (isNetworkEnabled) {
+                            /*
+                            locationManager.requestLocationUpdates(
+                                    LocationManager.NETWORK_PROVIDER,
+                                    MIN_TIME_BW_UPDATES,
+                                    MIN_DISTANCE_CHANGE_FOR_UPDATES, this);*/
+                            Log.d("Network", "Network Enabled");
+                            if (locationManager != null) {
+                                location = locationManager
+                                        .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                                if (location != null) {
+                                    latitude = location.getLatitude();
+                                    longitude = location.getLongitude();
+                                }
+                            }
+                        }
+                        // if GPS Enabled get lat/long using GPS Services
+                        if (isGPSEnabled) {
+                            if (location == null) {
+                                /*
+                                locationManager.requestLocationUpdates(
+                                        LocationManager.GPS_PROVIDER,
+                                        MIN_TIME_BW_UPDATES,
+                                        MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                                        */
+                                Log.d("GPS", "GPS Enabled");
+                                if (locationManager != null) {
+                                    location = locationManager
+                                            .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                    if (location != null) {
+                                        latitude = location.getLatitude();
+                                        longitude = location.getLongitude();
+                                    }
+                                }
+                            }
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        //Do nothing for now.
-                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-                query = "update User SET last_connection=now() WHERE user_id=' " + ProfileActivity.myself.getId() + "';";
-                boolean statementSuccess = st.execute(query);
 
+                query = "update User SET last_connection=now() WHERE user_id=' " + myself.getId() + "';";
+                boolean statementSuccess = st.execute(query);
+                if(longitude != 0)
+                {
+                    query = "update User SET longitude=' " + longitude +   "' WHERE user_id=' " + myself.getId() + "';";
+                    statementSuccess = st.execute(query);
+                }
+                if(latitude != 0) {
+                    query = "update User SET latitude=' " + latitude + "' WHERE user_id=' " + myself.getId() + "';";
+                    statementSuccess = st.execute(query);
+                }
+                myself.setCoord(new Coord(longitude, latitude, 0.0));
+
+                query = "select last_connection from User where email = '" + _email + "' AND password = '" + _password + "';";
+                rs = st.executeQuery(query);
+                rsmd = rs.getMetaData();
+
+                while(rs.next()) {
+                    if(myself == null) {
+                        myself = new User();
+                    }
+                    myself.setLastConnection(rs.getTimestamp(1));
+                }
                 success = true;
             }
             catch(Exception e) {
@@ -157,6 +230,25 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                 success =  false;
 
             }
+        }
+
+        public  void onLocationChanged(Location location) {
+            InvitationsMapActivity.onLocationChanged(location);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            //Nothing
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            //Nothing
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            //Nothing
         }
     }
 
@@ -200,7 +292,7 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         else if(client_id != 0)
         {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-            intent.putExtra("CLIENT_ID", client_id);
+            intent.putExtra("user", myself);
             startActivity(intent);
         }
         else
@@ -221,7 +313,7 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         if(success)
         {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-            intent.putExtra("CLIENT_ID", client_id);
+            intent.putExtra("user", myself);
             startActivity(intent);
         }
         else

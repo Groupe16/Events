@@ -1,6 +1,7 @@
 package com.localisation.events.activity;
 
 import android.content.res.Configuration;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -117,5 +118,13 @@ public class InvitationsMapActivity extends FragmentActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         menuToggle.onConfigurationChanged(newConfig);
+    }
+
+    public static void onLocationChanged(Location location) {
+
+
+
+
+
     }
 }

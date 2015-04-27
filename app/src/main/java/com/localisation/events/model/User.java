@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Vector;
 
 /**
@@ -24,7 +25,7 @@ public class User  implements Parcelable{
     private String phone;
     private String device;
     private String email;
-    private Time lastConnection;
+    private Timestamp lastConnection;
     private Coord coord;
 
     public User() {
@@ -43,17 +44,45 @@ public class User  implements Parcelable{
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeString(city);
+        if(bDate == null)
+        {
+            bDate = new Date(19710101);
+        }
         dest.writeString(String.valueOf(bDate));
+        if(interest == null)
+        {
+            interest = new Vector<Theme>();
+        }
         dest.writeParcelableArray(interest.toArray(new Theme[interest.size()]), flags);
+        if(organizedEvents == null)
+        {
+            organizedEvents = new Vector<Event>();
+        }
         dest.writeParcelableArray(organizedEvents.toArray(new Event[organizedEvents.size()]), flags);
+        if(futureEvents == null)
+        {
+            futureEvents = new Vector<Event>();
+        }
         dest.writeParcelableArray(futureEvents.toArray(new Event[futureEvents.size()]), flags);
+        if(pastEvents == null)
+        {
+            pastEvents = new Vector<Event>();
+        }
         dest.writeParcelableArray(pastEvents.toArray(new Event[pastEvents.size()]), flags);
+        if(invitations == null)
+        {
+            invitations = new Vector<Invitation>();
+        }
         dest.writeParcelableArray(invitations.toArray(new Invitation[invitations.size()]), flags);
         dest.writeString(login);
         dest.writeString(password);
         dest.writeString(email);
         dest.writeString(phone);
         dest.writeString(device);
+        if(lastConnection == null)
+        {
+            lastConnection = new Timestamp(71,01,01,00,00,00,00);
+        }
         dest.writeString(String.valueOf(lastConnection));
         dest.writeParcelable(coord, flags);
     }
@@ -111,7 +140,7 @@ public class User  implements Parcelable{
         this.email = in.readString();
         this.phone = in.readString();
         this.device = in.readString();
-        this.lastConnection = Time.valueOf(in.readString());
+        this.lastConnection = Timestamp.valueOf(in.readString());
         this.coord = in.readParcelable(Coord.class.getClassLoader());
     }
 
@@ -244,13 +273,11 @@ public class User  implements Parcelable{
         this.device = device;
     }
 
-    public Time getLastConnection() {
+    public Timestamp getLastConnection() {
         return lastConnection;
     }
 
-    public void setLastConnection(Time lastConnection) {
-        this.lastConnection = lastConnection;
-    }
+    public void setLastConnection(Timestamp lastConnection) { this.lastConnection = lastConnection; }
 
     public Coord getCoord() {
         return coord;
