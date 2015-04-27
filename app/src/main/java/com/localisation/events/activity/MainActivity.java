@@ -1,4 +1,4 @@
-package com.localisation.events;
+package com.localisation.events.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.localisation.events.*;
+import com.localisation.events.activity.ProfileActivity;
+import com.localisation.events.model.OnTaskCompleted;
+import com.localisation.events.model.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -180,7 +187,7 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
 
     public void registrationClick(View view){
         Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
-
+        intent.putExtra("user", new User());
         startActivity(intent);
     }
 
