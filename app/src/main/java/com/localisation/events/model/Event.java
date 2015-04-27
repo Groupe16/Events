@@ -1,6 +1,8 @@
 package com.localisation.events.model;
 
 import android.media.Image;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -9,20 +11,86 @@ import java.util.Vector;
 /**
  * Created by Zalila on 2015-03-29.
  */
-public class Event {
+public class Event  implements Parcelable{
     private int id;
     private String name;
     private String description;
     private boolean visibility;
     private Place place;
     private Date startDate, endDate;
-    private Time startTime, endTime;
     private Theme theme;
     private Vector<User> organizers;
     private Vector<User> participants;
     private String place_name;
     private String address;
     private Coord coord;
+
+    public Event() {
+    }
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(String.valueOf(visibility));
+        dest.writeParcelable(place, flags);
+        dest.writeString(String.valueOf(startDate));
+        dest.writeString(String.valueOf(endDate));
+        dest.writeParcelable(theme, flags);
+        dest.writeParcelableArray(organizers.toArray(new User[organizers.size()]), flags);
+        dest.writeParcelableArray(participants.toArray(new User[participants.size()]), flags);
+        dest.writeString(place_name);
+        dest.writeString(address);
+        dest.writeParcelable(coord, flags);
+    }
+
+    // CREATOR permet de décrire au Parcel comment construire l'Objet
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>()
+    {
+        @Override
+        public Event createFromParcel(Parcel source)
+        {
+            return new Event(source);
+        }
+
+        @Override
+        public Event[] newArray(int size)
+        {
+            return new Event[size];
+        }
+    };
+
+    //Constructeur avec Parcel
+    public Event(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.description = in.readString();
+        this.visibility = Boolean.valueOf(in.readString());
+        this.place = in.readParcelable(Place.class.getClassLoader());
+        this.startDate = Date.valueOf(in.readString());
+        this.endDate = Date.valueOf(in.readString());
+        User[] organizers = in.createTypedArray(User.CREATOR);
+        this.organizers = new Vector<>();
+        for (int i = 0; i < organizers.length; i++){
+            this.organizers.addElement(organizers[i]);
+        }
+        User[] participants = in.createTypedArray(User.CREATOR);
+        this.participants = new Vector<>();
+        for (int i = 0; i < participants.length; i++){
+            this.participants.addElement(participants[i]);
+        }
+        this.place_name = in.readString();
+        this.address = in.readString();
+        this.coord = in.readParcelable(Coord.class.getClassLoader());
+    }
 
     public boolean sendInvitation(Vector<User> users, Invitation invitation){
         invitation.setEvent(this);
@@ -81,22 +149,6 @@ public class Event {
         this.endDate = endDate;
     }
 
-    public Time getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Time startTime) {
-        this.startTime = startTime;
-    }
-
-    public Time getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
-    }
-
     public Theme getTheme() {
         return theme;
     }
@@ -151,5 +203,13 @@ public class Event {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPlace_name() {
+        return place_name;
+    }
+
+    public void setPlace_name(String place_name) {
+        this.place_name = place_name;
     }
 }

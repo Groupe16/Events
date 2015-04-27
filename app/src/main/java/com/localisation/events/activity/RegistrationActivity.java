@@ -1,4 +1,4 @@
-package com.localisation.events;
+package com.localisation.events.activity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,25 +13,29 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.localisation.events.*;
 import com.localisation.events.model.OnTaskCompleted;
+import com.localisation.events.model.User;
 
-import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-
 //pour s'inscrire
 public class RegistrationActivity extends ActionBarActivity implements OnTaskCompleted {
+
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        user = getIntent().getParcelableExtra("user");
+        if (user != new User()){
+            //fillFields(user);
+        }
     }
 
 
@@ -93,7 +97,7 @@ public class RegistrationActivity extends ActionBarActivity implements OnTaskCom
             Integer value = valAn * 10000 + valMois * 100 + valJour;
             SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
             date =  originalFormat.parse(value.toString());
-            Log.v("",date.toString());
+            Log.v("", date.toString());
         }
         catch(Exception e)
         {
@@ -210,7 +214,7 @@ public class RegistrationActivity extends ActionBarActivity implements OnTaskCom
         @Override
         protected Void doInBackground(Void... arg0) {
             try {
-                if(MainActivity.conn == null ||MainActivity.conn.isClosed() ) {
+                if(MainActivity.conn == null || MainActivity.conn.isClosed() ) {
                     Class.forName("com.mysql.jdbc.Driver");
                     MainActivity.conn = DriverManager.getConnection(url, user, pass);
                 }
@@ -224,7 +228,7 @@ public class RegistrationActivity extends ActionBarActivity implements OnTaskCom
             }
             catch(Exception e) {
                 e.printStackTrace();
-                resultMessage = e.getMessage().toString();
+                resultMessage = e.getMessage();
                 success =  false;
 
             }

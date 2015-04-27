@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.localisation.events.ProfileActivity"
+    tools:context="com.localisation.events.activity.ProfileActivity"
     android:id="@+id/menu_layout">
 
     <item android:title="@string/search"
