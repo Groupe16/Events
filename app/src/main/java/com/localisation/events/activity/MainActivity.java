@@ -2,6 +2,11 @@ package com.localisation.events.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -15,6 +20,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.localisation.events.*;
 import com.localisation.events.activity.ProfileActivity;
 import com.localisation.events.model.OnTaskCompleted;
@@ -25,6 +32,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
+import java.util.List;
 
 import android.widget.EditText;
 import android.widget.TextView;
@@ -119,6 +127,23 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                 if(client_id == 0)
                 {
                     throw new Exception("Invalid client ID");
+                }
+                double latitude = 0.0;
+                double longitude = 0.0;
+                LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+                Criteria criteria = new Criteria();
+                String provider= locationManager.getBestProvider(criteria, false);
+                if(provider!= null && !provider.equals("")) {
+                    List<Address> addresses = null;
+                    Geocoder geoCoder = new Geocoder(MainActivity.this);
+                    try {
+                        Location lastLoc = locationManager.getLastKnownLocation(provider);
+                        new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude());
+                    }
+                    catch (Exception e)
+                    {
+                        //Do nothing for now.
+                    }
                 }
 
                 query = "update User SET last_connection=now() WHERE user_id=' " + ProfileActivity.myself.getId() + "';";

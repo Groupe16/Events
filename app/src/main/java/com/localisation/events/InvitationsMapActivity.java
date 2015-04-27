@@ -31,8 +31,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.localisation.events.MainActivity;
 import com.localisation.events.R;
+import com.localisation.events.activity.MainActivity;
 
 
 import java.io.IOException;

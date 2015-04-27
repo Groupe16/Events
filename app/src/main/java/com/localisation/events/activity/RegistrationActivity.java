@@ -72,6 +72,7 @@ public class RegistrationActivity extends ActionBarActivity implements OnTaskCom
         EditText mMois = (EditText)findViewById(R.id.bd_MM_text);
         EditText mAn = (EditText)findViewById(R.id.bd_AA_text);
         EditText mVille = (EditText)findViewById(R.id.city_text);
+        EditText mPhone = (EditText)findViewById(R.id.phone_text);
         java.util.Date date = null;
         try {
             int valJour = Integer.parseInt(mJour.getText().toString());
@@ -141,6 +142,10 @@ public class RegistrationActivity extends ActionBarActivity implements OnTaskCom
             {
                 Toast.makeText(getApplicationContext(), "Veuillez entrez une valeur pour la ville", Toast.LENGTH_LONG).show();
             }
+            else if(mPhone.getText().toString().length() == 0 )
+            {
+                Toast.makeText(getApplicationContext(), "Veuillez entrez une valeur pour le numéro de téléphone", Toast.LENGTH_LONG).show();
+            }
             else {
 
                 Button validate_button = (Button) findViewById(R.id.validateInscription);
@@ -148,7 +153,7 @@ public class RegistrationActivity extends ActionBarActivity implements OnTaskCom
                 ProgressBar progressBar = (ProgressBar) findViewById(R.id.inscriptionProgress);
                 progressBar.setVisibility(View.VISIBLE);
                 AsyncRegisterToDB dbConnection = new AsyncRegisterToDB();
-                dbConnection.InsertData(mEmail.getText().toString(), mPseudo.getText().toString(), mPass.getText().toString(), mFirst.getText().toString(), mLast.getText().toString(), date, mVille.getText().toString());
+                dbConnection.InsertData(mEmail.getText().toString(), mPseudo.getText().toString(), mPass.getText().toString(), mFirst.getText().toString(), mLast.getText().toString(), date, mVille.getText().toString(), mPhone.getText().toString());
                 dbConnection.LinkTask(this);
                 dbConnection.execute();
             }
@@ -185,6 +190,7 @@ public class RegistrationActivity extends ActionBarActivity implements OnTaskCom
         private String _last_name = null;
         private java.util.Date _birthday = null;
         private String _city_name = null;
+        private String _telephone = null;
         private String resultMessage = null;
         boolean success = false;
 
@@ -194,7 +200,7 @@ public class RegistrationActivity extends ActionBarActivity implements OnTaskCom
             this.listener=listener;
         }
 
-        public void InsertData(String email, String pseudo, String password, String first_name, String last_name, java.util.Date birthday, String city_name) {
+        public void InsertData(String email, String pseudo, String password, String first_name, String last_name, java.util.Date birthday, String city_name, String telephone) {
             _email = email;
             _pseudo = pseudo;
             _password = password;
@@ -202,7 +208,7 @@ public class RegistrationActivity extends ActionBarActivity implements OnTaskCom
             _last_name = last_name;
             _birthday = birthday;
             _city_name = city_name;
-
+            _telephone = telephone;
         }
 
         @Override
@@ -222,7 +228,7 @@ public class RegistrationActivity extends ActionBarActivity implements OnTaskCom
                 // create a Statement from the connection
                 Statement statement = MainActivity.conn.createStatement();
                 java.sql.Date sqlDate = new java.sql.Date(_birthday.getTime());
-                statement.executeUpdate("INSERT INTO User (first_name,last_name, bDate, login, password, device, city, email" + ")" + "VALUES ('" +_first_name + "', '" + _last_name + "', '" + sqlDate + "', '" + _pseudo + "', '" + _password + "', 'Android', '" + _city_name + "', '" + _email + "')");
+                statement.executeUpdate("INSERT INTO User (first_name,last_name, bDate, login, password, device, city, email, telephone" + ")" + "VALUES ('" +_first_name + "', '" + _last_name + "', '" + sqlDate + "', '" + _pseudo + "', '" + _password + "', 'Android', '" + _city_name + "', '" + _email + "', '" + _telephone + "')");
                 resultMessage = "DB insertion success";
                 success = true;
             }
