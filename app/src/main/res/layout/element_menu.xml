@@ -6,4 +6,4 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:text="@string/hello_world"
-    android:textColor="#fff" />
+    android:textColor="#dec" />

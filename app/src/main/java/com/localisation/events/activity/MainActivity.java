@@ -1,4 +1,4 @@
-package com.localisation.events;
+package com.localisation.events.activity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -8,19 +8,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.localisation.events.*;
+import com.localisation.events.activity.ProfileActivity;
+import com.localisation.events.model.OnTaskCompleted;
+import com.localisation.events.model.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
-
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.localisation.events.model.OnTaskCompleted;
-
 
 //page de login
 public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
@@ -140,6 +140,7 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
 
     public void registrationClick(View view){
         Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+        intent.putExtra("user", new User());
         startActivity(intent);
     }
 
