@@ -27,7 +27,6 @@ public class EventActivity extends ActionBarActivity {
     private CharSequence activityTitle = "Evénement";
 
     private Event event;
-
     private User user;
 
 

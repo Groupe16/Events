@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.localisation.events.model.Event;
+import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
 
 import java.sql.Date;
@@ -32,16 +34,16 @@ public class SQLiteUser extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String CREATE_USER_TABLE = "CREATE TABLE user ( " +
-                "id INTEGER PRIMARY KEY, " +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "first_name TEXT, "+
                 "last_name TEXT, "+
-                "city TEXT " +
-                "bday TEXT " +
-                "login TEXT " +
-                "pwd TEXT " +
-                "email TEXT " +
-                "phone TEXT " +
-                "device TEXT " +
+                "city TEXT, " +
+                "bday TEXT, " +
+                "login TEXT, " +
+                "pwd TEXT, " +
+                "email TEXT, " +
+                "phone TEXT, " +
+                "device TEXT, " +
                 "last_cxn TEXT " +
                 ")";
         db.execSQL(CREATE_USER_TABLE);
@@ -70,7 +72,7 @@ public class SQLiteUser extends SQLiteOpenHelper {
     private static final String[] COLUMNS = {KEY_ID,KEY_FIRST_NAME, KEY_LAST_NAME, KEY_CITY, KEY_B_DAY,
     KEY_LOGIN, KEY_PWD, KEY_EMAIL, KEY_PHONE, KEY_DEVICE, KEY_LAST_CXN};
 
-    public void addUser(User user, int id){
+    public void addUser(User user, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_ID, String.valueOf(user.getId()));
@@ -86,7 +88,19 @@ public class SQLiteUser extends SQLiteOpenHelper {
         values.put(KEY_LAST_CXN, String.valueOf(user.getLastConnection()));
         db.insert(TABLE_USER, null, values);
 
-        //TODO save interet et event
+        SQLiteTheme theme = new SQLiteTheme(context);
+        SQLiteThemeUser tu = new SQLiteThemeUser(context);
+        for (Theme t : user.getInterest()){
+            theme.addTheme(t);
+            tu.add(user.getId(), t.getId());
+    }
+        SQLiteEvent event = new SQLiteEvent(context);
+        for (Event e : user.getOrganizedEvents())
+            event.addEvent(e);
+        for (Event e : user.getFutureEvents())
+            event.addEvent(e);
+        for (Event e : user.getPastEvents())
+            event.addEvent(e);
 
         db.close();
     }

@@ -244,26 +244,31 @@
 
 
             </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Valider"
+                    android:id="@+id/validateInscription"
+                    android:layout_alignBottom="@+id/scrollView"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="86dp"
+                    android:onClick="registrateClick" />
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Valider"
-        android:id="@+id/validateInscription"
-        android:layout_alignBottom="@+id/scrollView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="86dp"
-        android:onClick="registrateClick" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/inscriptionProgress"
-        android:layout_alignTop="@+id/validateInscription"
         android:layout_centerHorizontal="true"
         android:indeterminate="false"
         android:visibility="invisible" />

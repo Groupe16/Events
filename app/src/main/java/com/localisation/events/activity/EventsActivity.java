@@ -1,5 +1,6 @@
 package com.localisation.events.activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -7,10 +8,15 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.localisation.events.R;
+import com.localisation.events.adapter.EventsAdapter;
 import com.localisation.events.menu.SlideMenu;
+import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
 
 //pour afficher une liste d'événements
@@ -44,6 +50,22 @@ public class EventsActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_drawer);
+
+        final EventsAdapter adapter = new EventsAdapter(this, user);
+        final ListView listInterest = (ListView) findViewById(R.id.interestListView);
+        listInterest.setAdapter(adapter);
+
+        listInterest.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView textView = (TextView) listInterest.getAdapter().getView(position, view, parent);
+
+                Intent intent = new Intent(EventsActivity.this, EventActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("event", adapter.getEvents().get(position));
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -101,5 +123,12 @@ public class EventsActivity extends ActionBarActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         menuToggle.onConfigurationChanged(newConfig);
+    }
+
+    public void saveTheme(View view){
+        //String name = ((TextView) findViewById(R.id.name)).getText().toString();
+        //String group = ((TextView) findViewById(R.id.group)).getText().toString();
+
+        //TODO enregistre
     }
 }
