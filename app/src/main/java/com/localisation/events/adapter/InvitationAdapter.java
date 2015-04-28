@@ -22,10 +22,12 @@ import java.util.Vector;
 public class InvitationAdapter extends BaseAdapter {
     private Context mContext;
     private Vector<Invitation> invitations = new Vector<>();
+    User user;
 
     public InvitationAdapter(Context c, User user) {
         mContext = c;
         invitations.addAll(user.getInvitations());
+        this.user = user;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class InvitationAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LinearLayout linearLayout;
         TextView textView;
         Button accept = new Button(mContext);
@@ -58,6 +60,22 @@ public class InvitationAdapter extends BaseAdapter {
         linearLayout.addView(delete);
         textView.setText(invitations.get(position).getSender().getFirstName()
                 + " vous à envoyer " +invitations.get(position).getEvent().getName());
+
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                user.getOrganizedEvents().add(invitations.get(position).getEvent());
+                user.getInvitations().removeElement(invitations.get(position));
+
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                user.getInvitations().removeElement(invitations.get(position));
+            }
+        });
 
         return linearLayout;
     }
