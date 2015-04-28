@@ -1,11 +1,9 @@
 package com.localisation.events.model;
 
-import android.media.Image;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.util.Vector;
 
 /**
@@ -17,10 +15,10 @@ public class Event  implements Parcelable{
     private String description;
     private boolean visibility;
     private Place place;
-    private Date startDate, endDate;
+    private Date startDate = new Date(19710101), endDate = new Date(19710101);
     private Theme theme;
-    private Vector<User> organizers;
-    private Vector<User> participants;
+    private Vector<User> organizers = new Vector<>();
+    private Vector<User> participants = new Vector<>();
     private String place_name;
     private String address;
     private Coord coord;
