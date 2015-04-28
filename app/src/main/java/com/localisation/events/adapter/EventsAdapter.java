@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.localisation.events.R;
+import com.localisation.events.activity.ProfileActivity;
 import com.localisation.events.model.Event;
 import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
@@ -21,11 +22,13 @@ import java.util.Vector;
 public class EventsAdapter extends BaseAdapter {
     private Context mContext;
     private Vector<Event> events = new Vector<>();
+    public static Vector<Event> Events = new Vector<>();
 
     public EventsAdapter(Context c, User user) {
         mContext = c;
         //events.addAll(user.getPastEvents());
         //events.addAll(user.getFutureEvents());
+        events = ProfileActivity.eventList;
     }
 
     @Override

@@ -30,6 +30,7 @@ public class EventsActivity extends ActionBarActivity {
     private CharSequence activityTitle = "Evénements";
 
     private User user;
+    private ListView listInterest;
 
 
     @Override
@@ -51,8 +52,8 @@ public class EventsActivity extends ActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_drawer);
 
-        final EventsAdapter adapter = new EventsAdapter(this, user);
-        /*final ListView listInterest = (ListView) findViewById(R.id.interestListView);
+        EventsAdapter adapter = new EventsAdapter(this, user);
+        listInterest = (ListView) findViewById(R.id.eventsListView);
         listInterest.setAdapter(adapter);
 
         listInterest.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -66,7 +67,7 @@ public class EventsActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         })
-        */;
+        ;
     }
 
 
