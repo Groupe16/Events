@@ -46,11 +46,18 @@ public class User  implements Parcelable{
         dest.writeString(lastName);
         dest.writeString(city);
         dest.writeString(String.valueOf(bDate));
+        /*
         dest.writeParcelableArray(interest.toArray(new Theme[interest.size()]), flags);
         dest.writeParcelableArray(organizedEvents.toArray(new Event[organizedEvents.size()]), flags);
         dest.writeParcelableArray(futureEvents.toArray(new Event[futureEvents.size()]), flags);
         dest.writeParcelableArray(pastEvents.toArray(new Event[pastEvents.size()]), flags);
         dest.writeParcelableArray(invitations.toArray(new Invitation[invitations.size()]), flags);
+        */
+        dest.writeTypedArray(interest.toArray(new Theme[interest.size()]), flags);
+        dest.writeTypedArray(organizedEvents.toArray(new Event[organizedEvents.size()]), flags);
+        dest.writeTypedArray(futureEvents.toArray(new Event[futureEvents.size()]), flags);
+        dest.writeTypedArray(pastEvents.toArray(new Event[pastEvents.size()]), flags);
+        dest.writeTypedArray(invitations.toArray(new Invitation[invitations.size()]), flags);
         dest.writeString(login);
         dest.writeString(password);
         dest.writeString(email);

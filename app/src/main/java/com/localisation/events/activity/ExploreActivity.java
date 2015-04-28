@@ -2,6 +2,8 @@ package com.localisation.events.activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.location.Location;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -11,6 +13,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -20,9 +23,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.localisation.events.R;
 import com.localisation.events.adapter.MenuAdapter;
 import com.localisation.events.menu.SlideMenu;
+import com.localisation.events.model.OnTaskCompleted;
 import com.localisation.events.model.User;
 
-public class ExploreActivity extends FragmentActivity {
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Time;
+import java.util.Date;
+
+public class ExploreActivity extends FragmentActivity implements OnTaskCompleted {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -40,9 +50,12 @@ public class ExploreActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore);
+        user = getIntent().getParcelableExtra("user");
+        AsyncRefreshDB refresh = new AsyncRefreshDB();
+        refresh.LinkTask(this);
+        refresh.execute();
         setUpMapIfNeeded();
 
-        user = getIntent().getParcelableExtra("user");
 
         SlideMenu slideMenu = new SlideMenu(this, user);
         menuLayout = slideMenu.getMenuLayout();
@@ -93,7 +106,16 @@ public class ExploreActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        mMap.clear();
+        for(int i = 0; i<ProfileActivity.eventList.size(); i++)
+        {
+            for(int j=0; j<user.getInterest().size(); j++)
+            {
+                if(user.getInterest().get(j).getId() == ProfileActivity.eventList.get(i).getTheme().getId() ) {
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(ProfileActivity.eventList.get(i).getCoord().getLatitude(), ProfileActivity.eventList.get(i).getCoord().getLongitude())).title(ProfileActivity.eventList.get(i).getName()));
+                }
+            }
+        }
     }
 
 
@@ -130,5 +152,65 @@ public class ExploreActivity extends FragmentActivity {
         menuToggle.onConfigurationChanged(newConfig);
     }
 
+    private class AsyncRefreshDB extends AsyncTask<Void, Integer, Void>
+    {
 
+        private OnTaskCompleted listener;
+
+        public void LinkTask(OnTaskCompleted listener) {
+            this.listener = listener;
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            try {
+
+                MainActivity.SyncDB();
+
+
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            listener.onTaskCompleted(true,"Done");
+        }
+
+
+    }
+
+    public void onLocationChanged(Location location) {
+        AsyncRefreshDB refresh = new AsyncRefreshDB();
+        refresh.LinkTask(this);
+        refresh.execute();
+
+
+
+
+    }
+
+    public void onTaskCompleted(boolean success, String message)
+    {
+        if(success)
+        {
+            setUpMap();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Rafraichissant DB terminee", Toast.LENGTH_LONG).show();
+        }
+    }
 }

@@ -171,10 +171,17 @@ public class CreateEventActivity extends ActionBarActivity implements OnTaskComp
                 {
                     e.printStackTrace();
                 }
-                AsyncRegisterEventToDB dbConnection = new AsyncRegisterEventToDB();
-                dbConnection.InsertData(mName.getText().toString(), mDesc.getText().toString(), mPlaceName.getText().toString(), mAddress.getText().toString(), startDate, endDate, startTime, endTime, longitude, latitude, user.getId());
-                dbConnection.LinkTask(this);
-                dbConnection.execute();
+                if(latitude != 0 && longitude != 0) {
+                    AsyncRegisterEventToDB dbConnection = new AsyncRegisterEventToDB();
+                    dbConnection.InsertData(mName.getText().toString(), mDesc.getText().toString(), mPlaceName.getText().toString(), mAddress.getText().toString(), startDate, endDate, startTime, endTime, longitude, latitude, user.getId());
+                    dbConnection.LinkTask(this);
+                    dbConnection.execute();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "L'addresse n'a pu etre validée", Toast.LENGTH_LONG).show();
+                }
+
             }
         }
 
@@ -264,6 +271,8 @@ public class CreateEventActivity extends ActionBarActivity implements OnTaskComp
                 }
                 statement.executeUpdate("INSERT INTO Event (name,description, visibility, place_name, coord_id, address, start_date, end_date, start_time, end_time, theme_id, organizer_id)" + "VALUES ('" +_nomPlace + "', '" + _descEvenement + "', '1', '" + _nomPlace + "', '" + coord_id + "', '" + _Addresse + "', '" + sqlStartDate + "', '" + sqlEndDate +  "', '" + sqlStartTime + "', '" + sqlEndTime + "', '2', '" + _userID + "')");
                 resultMessage = "DB insertion success";
+
+                MainActivity.SyncDB();
                 success = true;
 
             }

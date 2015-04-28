@@ -2,6 +2,7 @@ package com.localisation.events.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.sql.Date;
 import java.util.Vector;
@@ -14,7 +15,6 @@ public class Event  implements Parcelable{
     private String name;
     private String description;
     private boolean visibility;
-    private Place place;
     private Date startDate = new Date(19710101), endDate = new Date(19710101);
     private Theme theme;
     private Vector<User> organizers = new Vector<>();
@@ -39,7 +39,6 @@ public class Event  implements Parcelable{
         dest.writeString(name);
         dest.writeString(description);
         dest.writeString(String.valueOf(visibility));
-        dest.writeParcelable(place, flags);
         dest.writeString(String.valueOf(startDate));
         dest.writeString(String.valueOf(endDate));
         dest.writeParcelable(theme, flags);
@@ -72,9 +71,12 @@ public class Event  implements Parcelable{
         this.name = in.readString();
         this.description = in.readString();
         this.visibility = Boolean.valueOf(in.readString());
-        this.place = in.readParcelable(Place.class.getClassLoader());
-        this.startDate = Date.valueOf(in.readString());
-        this.endDate = Date.valueOf(in.readString());
+        String startDate = in.readString();
+        if(startDate != null)
+        this.startDate = Date.valueOf(startDate);
+        String endDate = in.readString();
+        if(endDate != null)
+            this.endDate = Date.valueOf(endDate);;
         User[] organizers = in.createTypedArray(User.CREATOR);
         this.organizers = new Vector<>();
         for (int i = 0; i < organizers.length; i++){
@@ -121,14 +123,6 @@ public class Event  implements Parcelable{
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Place getPlace() {
-        return place;
-    }
-
-    public void setPlace(Place place) {
-        this.place = place;
     }
 
     public Date getStartDate() {

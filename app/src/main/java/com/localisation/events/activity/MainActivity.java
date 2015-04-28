@@ -28,7 +28,6 @@ import com.localisation.events.activity.ProfileActivity;
 import com.localisation.events.model.Coord;
 import com.localisation.events.model.Event;
 import com.localisation.events.model.OnTaskCompleted;
-import com.localisation.events.model.Place;
 import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
 
@@ -37,6 +36,8 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLDataException;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Vector;
@@ -58,6 +59,7 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
     private static final String user = "Vincent";
     private static final String pass = "test";
     private static int client_id = 0;
+    public static ConnectivityManager connectivityManager =null;
 
     /** Called when the activity is first created. */
     @Override
@@ -67,8 +69,53 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         //GPSLocation GPSLocator = new GPSLocation(this, null);
     }
 
-    private class AsyncConnectToDB extends AsyncTask<Void, Integer, Void> implements LocationListener
-    {
+    public static Boolean SyncDB() throws SQLException, ClassNotFoundException {
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if(activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+            if (MainActivity.conn == null || MainActivity.conn.isClosed()) {
+                Class.forName("com.mysql.jdbc.Driver");
+                MainActivity.conn = DriverManager.getConnection(url, user, pass);
+            }
+            ProfileActivity.interestList = new Vector<Theme>();
+            String query = "select * from Theme;";
+            Statement st = MainActivity.conn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            while (rs.next()) {
+                ProfileActivity.interestList.add(new Theme(rs.getInt("theme_id"), rs.getString("name"), rs.getString("groupe")));
+            }
+            ProfileActivity.eventList = new Vector<Event>();
+            query = "select * from Event, Coord where Event.coord_id = Coord.coord_id;";
+            rs = st.executeQuery(query);
+            rsmd = rs.getMetaData();
+
+
+            while (rs.next()) {
+                Coord tempCoord = new Coord(rs.getDouble("longitude"), rs.getDouble("latitude"), 0);
+                Event tempEvent = new Event();
+                tempEvent.setId(rs.getInt("event_id"));
+                tempEvent.setName(rs.getString("name"));
+                tempEvent.setDescription(rs.getString("description"));
+                tempEvent.setVisibility(rs.getBoolean("visibility"));
+                tempEvent.setStartDate(rs.getDate("start_date"));
+                tempEvent.setEndDate(rs.getDate("end_date"));
+                tempEvent.setTheme(ProfileActivity.interestList.get(rs.getInt("theme_id")-1));
+                //tempEvent.setOrganizers();
+                tempEvent.setPlace_name(rs.getString("place_name"));
+                tempEvent.setAddress(rs.getString("address"));
+                tempEvent.setCoord(tempCoord);
+                ProfileActivity.eventList.add(tempEvent);
+
+            }
+
+        }
+
+        return true;
+    }
+
+
+    private class AsyncConnectToDB extends AsyncTask<Void, Integer, Void> implements LocationListener {
         private String _email = null;
         private String _password = null;
         private String resultMessage = null;
@@ -76,8 +123,8 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
 
         private OnTaskCompleted listener;
 
-        public void LinkTask(OnTaskCompleted listener){
-            this.listener=listener;
+        public void LinkTask(OnTaskCompleted listener) {
+            this.listener = listener;
         }
 
         public void InsertData(String email, String password) {
@@ -99,12 +146,16 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
 
         @Override
         protected void onPostExecute(Void result) {
-            listener.onTaskCompleted(success,resultMessage);
+            listener.onTaskCompleted(success, resultMessage);
         }
+
+
+
+
 
         public void Connect() {
             try {
-                if(MainActivity.conn == null ||MainActivity.conn.isClosed() ) {
+                if (MainActivity.conn == null || MainActivity.conn.isClosed()) {
                     Class.forName("com.mysql.jdbc.Driver");
                     MainActivity.conn = DriverManager.getConnection(url, user, pass);
                 }
@@ -115,12 +166,12 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                 ResultSet rs = st.executeQuery(query);
                 ResultSetMetaData rsmd = rs.getMetaData();
 
-                while(rs.next()) {
-                    if(myself == null) {
+                while (rs.next()) {
+                    if (myself == null) {
                         myself = new User();
                     }
                     myself.setId(rs.getInt("user_id"));
-                    client_id =  myself.getId();
+                    client_id = myself.getId();
                     myself.setFirstName(rs.getString("first_name"));
                     myself.setLastName(rs.getString("last_name"));
                     myself.setbDate(rs.getDate("bDate"));
@@ -131,48 +182,11 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                     myself.setEmail(rs.getString("email"));
                     myself.setPhone(rs.getString("telephone"));
                 }
-                if(client_id == 0)
-                {
+                if (client_id == 0) {
                     throw new Exception("Invalid client ID");
                 }
-
-                query = "select * from Theme;";
-                rs = st.executeQuery(query);
-                rsmd = rs.getMetaData();
-
-                while(rs.next()) {
-                    ProfileActivity.interestList.add(new Theme(rs.getInt("theme_id"), rs.getString("name"), rs.getString("groupe")));
-                }
-
-                query = "select * from Event;";
-                rs = st.executeQuery(query);
-                rsmd = rs.getMetaData();
-/*
-                private int id;
-                private String name;
-                private String description;
-                private boolean visibility;
-                private Place place;
-                private Date startDate = new Date(19710101), endDate = new Date(19710101);
-                private Theme theme;
-                private Vector<User> organizers = new Vector<>();
-                private Vector<User> participants = new Vector<>();
-                private String place_name;
-                private String address;
-                private Coord coord;
-               */
-
-                /* Place
-                private int id;
-    private String name;
-    private Coord coord;
-    private String address;
-
-                 */
-                while(rs.next()) {
-                    Place tempPlace = new Place(0,rs.getString("place_name"),)
-                    ProfileActivity.eventList.add(new Event(rs.getInt("event_id"), rs.getString("name"), rs.getString("description"), rs.getBoolean("visibility"), rs.getString);
-                }
+                query = "update User SET last_connection=now() WHERE user_id=' " + myself.getId() + "';";
+                boolean statementSuccess = st.execute(query);
 
                 double latitude = 0.0;
                 double longitude = 0.0;
@@ -181,7 +195,7 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                 boolean isGPSEnabled;
                 boolean isNetworkEnabled;
                 long MIN_TIME_BW_UPDATES = 10;
-                long MIN_DISTANCE_CHANGE_FOR_UPDATES =  10;
+                long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
                 Context mContext = getApplicationContext();
                 try {
                     locationManager = (LocationManager) mContext
@@ -238,35 +252,39 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                         }
                     }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-                query = "update User SET last_connection=now() WHERE user_id=' " + myself.getId() + "';";
-                boolean statementSuccess = st.execute(query);
-                if(longitude != 0)
-                {
-                    query = "update User SET longitude=' " + longitude +   "' WHERE user_id=' " + myself.getId() + "';";
-                    statementSuccess = st.execute(query);
-                }
-                if(latitude != 0) {
-                    query = "update User SET latitude=' " + latitude + "' WHERE user_id=' " + myself.getId() + "';";
-                    statementSuccess = st.execute(query);
-                }
-                myself.setCoord(new Coord(longitude, latitude, 0.0));
-
-                query = "select last_connection from User where email = '" + _email + "' AND password = '" + _password + "';";
-                rs = st.executeQuery(query);
-                rsmd = rs.getMetaData();
-
-                while(rs.next()) {
-                    if(myself == null) {
-                        myself = new User();
+                    if (longitude != 0) {
+                        query = "update User SET longitude=' " + longitude + "' WHERE user_id=' " + myself.getId() + "';";
+                        statementSuccess = st.execute(query);
                     }
-                    myself.setLastConnection(rs.getTimestamp(1));
+                    if (latitude != 0) {
+                        query = "update User SET latitude=' " + latitude + "' WHERE user_id=' " + myself.getId() + "';";
+                        statementSuccess = st.execute(query);
+                    }
+                    myself.setCoord(new Coord(longitude, latitude, 0.0));
+
+                    query = "select last_connection from User where email = '" + _email + "' AND password = '" + _password + "';";
+                    rs = st.executeQuery(query);
+                    rsmd = rs.getMetaData();
+
+                    while (rs.next()) {
+                        myself.setLastConnection(rs.getTimestamp(1));
+                    }
+
+                    success = SyncDB();
+
+                    query = "select theme_id from user_theme where user_id='" + myself.getId() + "';";
+                    Vector<Theme> interest = new Vector<Theme>();
+                    rs = st.executeQuery(query);
+                    while (rs.next()) {
+                        interest.add(ProfileActivity.interestList.get(rs.getInt("theme_id")));
+                    }
+                    myself.setInterest(interest);
                 }
-                success = true;
+                catch(Exception e) {
+                    e.printStackTrace();
+                    resultMessage = e.getMessage().toString();
+                    success = false;
+                }
             }
             catch(Exception e) {
                 e.printStackTrace();
@@ -322,7 +340,7 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
     }
 
     public void testClick(View view){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         if(activeNetworkInfo != null && activeNetworkInfo.isConnected())
         {

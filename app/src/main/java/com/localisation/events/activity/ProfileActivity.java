@@ -40,6 +40,7 @@ public class ProfileActivity extends ActionBarActivity {
 
     public static Vector<Event> eventList = new Vector<Event>();
     public static Vector<Theme> interestList = new Vector<Theme>();
+    public static Vector<User> userList = new Vector<User>();
     private DrawerLayout menuLayout; //Layout Principal
     private ListView menuElementsList; //Menu
     private ActionBarDrawerToggle menuToggle; //Gère l'ouverture et la fermeture du menu
@@ -96,9 +97,9 @@ public class ProfileActivity extends ActionBarActivity {
         TextView phone = (TextView) findViewById(R.id.phone_text);
         phone.setText(user.getPhone());
         if (user.getInterest().size() > 0) {
-            InterestAdapter adapter = new InterestAdapter(this, user.getInterest());
-            ListView listInterest = (ListView) findViewById(R.id.interestListView);
-            listInterest.setAdapter(adapter);
+            //InterestAdapter adapter = new InterestAdapter(this, user.getInterest());
+            //ListView listInterest = (ListView) findViewById(R.id.interestListView);
+            //listInterest.setAdapter(adapter);
         }else{
             //TextView msgView = (TextView) findViewById(R.id.msgTextView);
             //msgView.setText("aucun interet sauvegardé");

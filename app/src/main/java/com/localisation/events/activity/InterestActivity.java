@@ -1,6 +1,8 @@
 package com.localisation.events.activity;
 
 import android.content.res.Configuration;
+import android.location.LocationListener;
+import android.os.AsyncTask;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -18,9 +20,13 @@ import com.localisation.events.R;
 import com.localisation.events.adapter.InterestAdapter;
 import com.localisation.events.adapter.InterestButtonAdapter;
 import com.localisation.events.menu.SlideMenu;
+import com.localisation.events.model.OnTaskCompleted;
 import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 
 public class InterestActivity extends ActionBarActivity {
@@ -31,7 +37,6 @@ public class InterestActivity extends ActionBarActivity {
 
     private CharSequence menuTitle = "Menu";
     private CharSequence activityTitle = "Intérêts";
-
     private User user;
 
     public User getUser() {
@@ -80,7 +85,10 @@ public class InterestActivity extends ActionBarActivity {
                     imageView = ((ImageView) linearLayout.getChildAt(1));
                     imageView.setImageResource(R.drawable.vide);
                     imageView.refreshDrawableState();
-                    //TODO retirer theme t de la base
+
+                    AsyncConnectToDB asyncConnect = new AsyncConnectToDB();
+                    asyncConnect.InsertData(user.getId(), t.getId(), false);
+                    asyncConnect.execute();
                 }else{
                     Theme t = adapter.getAll().get(position);
                     user.getInterest().add(t);
@@ -88,12 +96,66 @@ public class InterestActivity extends ActionBarActivity {
                     imageView.setImageResource(R.drawable.ok);
                     imageView.refreshDrawableState();
                     themes.add(t.getName());
-                    //TODO ajouter theme t de la base
+
+                    AsyncConnectToDB asyncConnect = new AsyncConnectToDB();
+                    asyncConnect.InsertData(user.getId(), t.getId(), true);
+                    asyncConnect.execute();
                 }
             }
         });
     }
 
+
+    private class AsyncConnectToDB extends AsyncTask<Void, Integer, Void> {
+        private int _user_id = 0;
+        private int _theme_id = 0;
+        private boolean _add = false;
+        private String resultMessage = null;
+        boolean success = false;
+
+
+
+        public void InsertData(int user_id, int theme_id, boolean add) {
+            _user_id = user_id;
+            _theme_id = theme_id;
+            _add= add;
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            RefreshUserInterest();
+            return null;
+        }
+
+        private void RefreshUserInterest() {
+            String query = "";
+            if(!_add)
+                query = "DELETE FROM user_theme WHERE user_id ='" + _user_id + "' AND theme_id = '" + _theme_id + "';";
+            else
+                query = "Insert INTO user_theme VALUES('"+ _user_id + "', '" + _theme_id + "');";
+            Statement st = null;
+            try {
+                st = MainActivity.conn.createStatement();
+                st.execute(query);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
