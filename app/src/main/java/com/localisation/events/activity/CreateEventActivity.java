@@ -13,16 +13,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.localisation.events.R;
 import com.localisation.events.menu.SlideMenu;
 import com.localisation.events.model.OnTaskCompleted;
+import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
 
 import java.sql.DriverManager;
@@ -31,6 +34,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,6 +65,12 @@ public class CreateEventActivity extends ActionBarActivity implements OnTaskComp
         getSupportActionBar().setIcon(R.drawable.ic_drawer);
 
         getLocation();
+
+        Spinner themeList = (Spinner) findViewById(R.id.themeSpinner);
+        List<Theme> themes = new ArrayList<>();
+        //TODO ajouter les theme
+        ArrayAdapter<Theme> adapter = new ArrayAdapter<Theme>(this, android.R.layout.simple_list_item_1, themes);
+        themeList.setAdapter(adapter);
     }
 
     private void getLocation() {

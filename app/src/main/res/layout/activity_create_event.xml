@@ -237,14 +237,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Intérêts"
+                    android:text="Theme"
                     android:id="@+id/textView5"
                     android:layout_gravity="center_vertical" />
 
-                <ListView
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/listView"
+                    android:id="@+id/themeSpinner"
                     android:layout_weight="1" />
 
             </LinearLayout>
@@ -270,14 +270,5 @@
         android:background="#123"
         android:layout_gravity="start"/>
 
-    <ListView
-        android:layout_height="match_parent"
-        android:layout_width="200dp"
-        android:id="@+id/menu_elements"
-        android:dividerHeight="0dp"
-        android:divider="@android:color/transparent"
-        android:choiceMode="singleChoice"
-        android:background="#fff"
-        android:layout_gravity="start"/>
 
 </android.support.v4.widget.DrawerLayout>

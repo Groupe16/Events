@@ -112,59 +112,6 @@ public class ProfileActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-
-    private void createSlideMenu() {
-
-        //recupèration du layout et la liste
-        menuLayout = (DrawerLayout) findViewById(R.id.menu_layout);
-        menuElementsList = (ListView) findViewById(R.id.menu_elements);
-
-        //direction grauche -> droite  //même valeur que celle spécifiée en
-        // XML dans la ListView (android:layout_gravity="start")
-        menuLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-
-        final MenuAdapter adapter = new MenuAdapter(this);
-
-        //adapter pour ajouter les éléments
-        menuElementsList.setAdapter(adapter);
-
-        //activation du bouton home
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.ic_drawer);
-
-        //création de MenuToggle qui permet d'ouvrir et fermer le menu
-        // ActionBarDrawerToggle ties together the the proper interactions
-        // between the sliding drawer and the action bar app icon
-        menuToggle = new ActionBarDrawerToggle(this, /* host Activity */
-                menuLayout, /* DrawerLayout object */
-                //R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-                R.string.drawer_open, /* "open drawer" description for accessibility */
-                R.string.drawer_close /* "close drawer" description for accessibility */
-        ) {
-            public void onDrawerClosed(View view) {
-                getSupportActionBar().setTitle(activityTitle);
-                invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(menuTitle);
-                invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-            }
-        };
-        menuLayout.setDrawerListener(menuToggle);
-        //clic des éléments du menu
-        menuElementsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View view, int position,long id) {
-
-                Intent intent = new Intent(ProfileActivity.this, adapter.getAction(position));
-                startActivity(intent);
-
-            }
-        });
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
