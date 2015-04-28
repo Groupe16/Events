@@ -59,18 +59,10 @@ public class InterestActivity extends ActionBarActivity {
         //createSlideMenu();
 
         user = getIntent().getParcelableExtra("user");
-        final Vector<String> themesn = new Vector<>();
-        Vector<Theme> themes = new Vector<>();
-        Theme theme = new Theme(0,"Concert","Musique");
-        themes.add(theme);
-        theme = new Theme(7,"Escapade","Sorties");
-        themes.add(theme);
-        theme = new Theme(8,"Bar","Sorties");
-        themes.add(theme);
-        user.setInterest(themes);
+        final Vector<String> themes = new Vector<>();
 
         for (Theme t : user.getInterest())
-            themesn.add(t.getName());
+            themes.add(t.getName());
 
         final InterestButtonAdapter adapter = new InterestButtonAdapter(this, user.getInterest());
         final ListView listInterest = (ListView) findViewById(R.id.interestListView);
@@ -81,19 +73,21 @@ public class InterestActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LinearLayout linearLayout = (LinearLayout) listInterest.getAdapter().getView(position, view, parent);
                 ImageView imageView;
-                if (themesn.contains(((TextView) linearLayout.getChildAt(0)).getText())){
-                    Theme t = user.getInterest().get(themesn.indexOf(((TextView) linearLayout.getChildAt(0)).getText()));
+                if (themes.contains(((TextView) linearLayout.getChildAt(0)).getText())){
+                    Theme t = user.getInterest().get(themes.indexOf(((TextView) linearLayout.getChildAt(0)).getText()));
                     user.getInterest().removeElement(t);
-                    themesn.removeElement(t.getName());
+                    themes.removeElement(t.getName());
                     imageView = ((ImageView) linearLayout.getChildAt(1));
                     imageView.setImageResource(R.drawable.vide);
+                    imageView.refreshDrawableState();
                     //TODO retirer theme t de la base
                 }else{
                     Theme t = adapter.getAll().get(position);
                     user.getInterest().add(t);
                     imageView = ((ImageView) linearLayout.getChildAt(1));
                     imageView.setImageResource(R.drawable.ok);
-                    themesn.add(t.getName());
+                    imageView.refreshDrawableState();
+                    themes.add(t.getName());
                     //TODO ajouter theme t de la base
                 }
             }
