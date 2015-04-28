@@ -203,7 +203,7 @@ public class CreateEventActivity extends ActionBarActivity implements OnTaskComp
     {
         if(success)
         {
-            Intent intent = new Intent(CreateEventActivity.this, ProfileActivity.class);
+            Intent intent = new Intent(CreateEventActivity.this, InvitationsMapActivity.class);
             intent.putExtra("user", user);
             startActivity(intent);
         }
