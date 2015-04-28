@@ -39,6 +39,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -356,6 +357,25 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                         tempFutureEventVector.add(ProfileActivity.eventList.get(rs.getInt("event_id")));
                     }
                     myself.setFutureEvents(tempFutureEventVector);
+
+                    query = "select * from user_event ORDER BY event_id;";
+                    rs = st.executeQuery(query);
+                    LinkedList<Integer> templist = new LinkedList<Integer>();
+                    Integer previous = -1;
+                    while (rs.next()) {
+                        if(rs.getInt("event_id") == previous)
+                        {
+                            templist.add(rs.getInt("user_id"));
+                        }
+                        else
+                        {
+                            ProfileActivity.event_to_users.put(rs.getInt("event_id"), templist);
+                            templist = new LinkedList<Integer>();
+                            templist.add(rs.getInt("user_id"));
+                            previous = rs.getInt("user_id");
+                        }
+                    }
+
                 }
 
                 catch(Exception e) {

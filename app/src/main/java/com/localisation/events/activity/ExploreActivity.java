@@ -65,10 +65,12 @@ public class ExploreActivity extends FragmentActivity implements OnTaskCompleted
                 AlertDialog.Builder builder = new AlertDialog.Builder(ExploreActivity.this);
                 for (int i = 0; i < ProfileActivity.eventList.size(); i++) {
                     if (ProfileActivity.eventList.get(i).getName().equals( marker.getTitle())) {
+                        String participants = "";
+                        //for(int i=0;)
                         builder.setMessage("Description: " + ProfileActivity.eventList.get(i).getDescription() + "\n"
                         + "Lieu: " + ProfileActivity.eventList.get(i).getPlace_name() + "\n"
                         + "Addresse: " + ProfileActivity.eventList.get(i).getAddress() + "\n"
-                        + "Prenom Organisateur: " + ProfileActivity.eventList.get(i).getOrganizers().get(0).getFirstName() ).setTitle("Description étendu");
+                        + "Prenom Organisateur: " + ProfileActivity.eventList.get(i).getOrganizers().get(0).getFirstName() + "\n" + participants ).setTitle("Description étendu");
                         if(user.getFutureEvents().contains(ProfileActivity.eventList.get(i))) {
                             final int id = i;
                             builder.setPositiveButton("Se désinscrire", new DialogInterface.OnClickListener() {
@@ -229,7 +231,6 @@ public class ExploreActivity extends FragmentActivity implements OnTaskCompleted
             try {
 
                 MainActivity.SyncDB();
-                MainActivity.RefreshUserEvents(user);
 
 
             }
