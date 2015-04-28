@@ -10,9 +10,7 @@ import com.localisation.events.activity.CreateEventActivity;
 import com.localisation.events.activity.EventsActivity;
 import com.localisation.events.activity.ExploreActivity;
 import com.localisation.events.activity.InterestActivity;
-import com.localisation.events.activity.NotificationActivity;
 import com.localisation.events.activity.ProfileActivity;
-import com.localisation.events.activity.SettingsActivity;
 
 /**
  * Created by Zalila on 2015-04-21.
@@ -56,27 +54,19 @@ public class MenuAdapter extends BaseAdapter {
     }
 
     private String[] mThumbIds = {
-            "Recherche", //  barre de recherche
             "Profil", // ajouter l'avatar
-            "Notifications",
             "Explorer",
             "Créer un événement",
             "Evénements",
-            "Evénements passés",
-            "Interets",
-            "Réglages"
+            "Interets"
     };
 
     private Class[] actions = {
             ProfileActivity.class,
-            ProfileActivity.class,
-            NotificationActivity.class,
             ExploreActivity.class,
             CreateEventActivity.class,
             EventsActivity.class,
-            EventsActivity.class,
-            InterestActivity.class,
-            SettingsActivity.class
+            InterestActivity.class
     };
 
     public Class getAction(int position){

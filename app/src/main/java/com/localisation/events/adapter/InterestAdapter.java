@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.localisation.events.activity.CreateEventActivity;
 import com.localisation.events.activity.EventsActivity;
 import com.localisation.events.activity.ExploreActivity;
-import com.localisation.events.activity.NotificationActivity;
 import com.localisation.events.activity.ProfileActivity;
 import com.localisation.events.activity.SettingsActivity;
 import com.localisation.events.model.Theme;
