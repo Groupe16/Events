@@ -88,7 +88,7 @@ public class InterestActivity extends ActionBarActivity {
         getSupportActionBar().setIcon(R.drawable.ic_drawer);
         //createSlideMenu();
 
-        user = getIntent().getParcelableExtra("user");
+        //user = getIntent().getParcelableExtra("user");
         final Vector<String> themes = new Vector<>();
 
         for (Theme t : user.getInterest())
