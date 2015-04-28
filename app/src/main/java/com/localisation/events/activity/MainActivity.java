@@ -26,16 +26,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.localisation.events.*;
 import com.localisation.events.activity.ProfileActivity;
 import com.localisation.events.model.Coord;
+import com.localisation.events.model.Event;
 import com.localisation.events.model.OnTaskCompleted;
+import com.localisation.events.model.Place;
 import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Vector;
 
 import android.widget.EditText;
 import android.widget.TextView;
@@ -139,6 +143,37 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                 while(rs.next()) {
                     ProfileActivity.interestList.add(new Theme(rs.getInt("theme_id"), rs.getString("name"), rs.getString("groupe")));
                 }
+
+                query = "select * from Event;";
+                rs = st.executeQuery(query);
+                rsmd = rs.getMetaData();
+/*
+                private int id;
+                private String name;
+                private String description;
+                private boolean visibility;
+                private Place place;
+                private Date startDate = new Date(19710101), endDate = new Date(19710101);
+                private Theme theme;
+                private Vector<User> organizers = new Vector<>();
+                private Vector<User> participants = new Vector<>();
+                private String place_name;
+                private String address;
+                private Coord coord;
+               */
+
+                /* Place
+                private int id;
+    private String name;
+    private Coord coord;
+    private String address;
+
+                 */
+                while(rs.next()) {
+                    Place tempPlace = new Place(0,rs.getString("place_name"),)
+                    ProfileActivity.eventList.add(new Event(rs.getInt("event_id"), rs.getString("name"), rs.getString("description"), rs.getBoolean("visibility"), rs.getString);
+                }
+
                 double latitude = 0.0;
                 double longitude = 0.0;
                 Location location = null;

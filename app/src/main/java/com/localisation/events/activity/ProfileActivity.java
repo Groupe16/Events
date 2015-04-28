@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.localisation.events.model.Event;
 import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
 
@@ -37,6 +38,7 @@ import com.localisation.events.model.User;
 //pour afficher le profil de l'utilisateur
 public class ProfileActivity extends ActionBarActivity {
 
+    public static Vector<Event> eventList = new Vector<Event>();
     public static Vector<Theme> interestList = new Vector<Theme>();
     private DrawerLayout menuLayout; //Layout Principal
     private ListView menuElementsList; //Menu
