@@ -496,7 +496,7 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             //intent.putExtra("user", myself);
-            userS = myself;
+            ProfileActivity.userS = myself;
             intent.putExtra("activity", "main");
             startActivity(intent);
         }

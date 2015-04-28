@@ -43,27 +43,27 @@ public class EventsActivity extends ActionBarActivity {
         //user = getIntent().getParcelableExtra("user");
 
         if (getIntent().getStringExtra("activity").equals("main"))
-            user = MainActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("registration"))
-            user = RegistrationActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("explore"))
-            user = ExploreActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("create"))
-            user = CreateEventActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("events"))
-            user = EventsActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("invitations"))
-            user = InvitationsActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("interest"))
-            user = ExploreActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("profile"))
             user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("maps"))
-            user = InvitationsMapActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("invitation"))
-            user = InvitationActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("event"))
-            user = EventActivity.userS;
+            user = ProfileActivity.userS;
 
         SlideMenu slideMenu = new SlideMenu(this, user);
         menuLayout = slideMenu.getMenuLayout();

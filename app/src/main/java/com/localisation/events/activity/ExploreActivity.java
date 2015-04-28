@@ -58,28 +58,28 @@ public class ExploreActivity extends FragmentActivity implements OnTaskCompleted
         //user = getIntent().getParcelableExtra("user");
 
         if (getIntent().getStringExtra("activity").equals("main"))
-            user = MainActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("registration"))
-            user = RegistrationActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("explore"))
-            user = ExploreActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("create"))
-            user = CreateEventActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("events"))
-            user = EventsActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("invitations"))
-            user = InvitationsActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("interest"))
-            user = ExploreActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("profile"))
             user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("maps"))
-            user = InvitationsMapActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("invitation"))
-            user = InvitationActivity.userS;
+            user = ProfileActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("event"))
-            user = EventActivity.userS;
-
+            user = ProfileActivity.userS;
+        userS =user;
         AsyncRefreshDB refresh = new AsyncRefreshDB();
         refresh.LinkTask(this);
         refresh.execute();
@@ -96,12 +96,12 @@ public class ExploreActivity extends FragmentActivity implements OnTaskCompleted
                         + "Lieu: " + ProfileActivity.eventList.get(i).getPlace_name() + "\n"
                         + "Addresse: " + ProfileActivity.eventList.get(i).getAddress() + "\n"
                         + "Prenom Organisateur: " + ProfileActivity.eventList.get(i).getOrganizers().get(0).getFirstName() + "\n" + participants ).setTitle("Description étendu");
-                        if(user.getFutureEvents().contains(ProfileActivity.eventList.get(i))) {
+                        if(userS.getFutureEvents().contains(ProfileActivity.eventList.get(i))) {
                             final int id = i;
                             builder.setPositiveButton("Se désinscrire", new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int which) {
-                                    user.getFutureEvents().remove(ProfileActivity.eventList.get(id));
+                                    userS.getFutureEvents().remove(ProfileActivity.eventList.get(id));
                                     AsyncRefreshEvent DBRefresh = new AsyncRefreshEvent();
                                     DBRefresh.execute();
                                     dialog.dismiss();
@@ -113,7 +113,7 @@ public class ExploreActivity extends FragmentActivity implements OnTaskCompleted
                             final int id = i;
                             builder.setPositiveButton("S'inscrire", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    user.getFutureEvents().add(ProfileActivity.eventList.get(id));
+                                    userS.getFutureEvents().add(ProfileActivity.eventList.get(id));
                                     AsyncRefreshEvent DBRefresh = new AsyncRefreshEvent();
                                     DBRefresh.execute();
                                     dialog.dismiss();
@@ -192,12 +192,13 @@ public class ExploreActivity extends FragmentActivity implements OnTaskCompleted
         mMap.clear();
         for(int i = 0; i<ProfileActivity.eventList.size(); i++)
         {
-            for(int j=0; j<user.getInterest().size(); j++)
+            for(int j=0; j<userS.getInterest().size(); j++)
             {
-                if(user.getInterest().get(j).getId() == ProfileActivity.eventList.get(i).getTheme().getId() ) {
+                if(userS.getInterest().get(j).getId() == ProfileActivity.eventList.get(i).getTheme().getId() ) {
                     mMap.addMarker(new MarkerOptions().position(new LatLng(ProfileActivity.eventList.get(i).getCoord().getLatitude(), ProfileActivity.eventList.get(i).getCoord().getLongitude())).title(ProfileActivity.eventList.get(i).getName()));
                 }
             }
+
         }
     }
 
