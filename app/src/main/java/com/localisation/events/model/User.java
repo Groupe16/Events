@@ -60,7 +60,7 @@ public class User  implements Parcelable{
         dest.writeTypedArray(organizedEvents.toArray(new Event[organizedEvents.size()]), flags);
         dest.writeTypedArray(futureEvents.toArray(new Event[futureEvents.size()]), flags);
         dest.writeTypedArray(pastEvents.toArray(new Event[pastEvents.size()]), flags);
-        dest.writeTypedArray(invitations.toArray(new Invitation[invitations.size()]), flags);
+        dest.writeParcelableArray(invitations.toArray(new Invitation[invitations.size()]), flags);
         dest.writeString(login);
         dest.writeString(password);
         dest.writeString(email);

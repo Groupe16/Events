@@ -18,7 +18,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -39,6 +41,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -85,6 +88,33 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
             while (rs.next()) {
                 ProfileActivity.interestList.add(new Theme(rs.getInt("theme_id"), rs.getString("name"), rs.getString("groupe")));
             }
+
+            ProfileActivity.userList = new Vector<User>();
+            query = "select * from User";
+            rs = st.executeQuery(query);
+            rsmd = rs.getMetaData();
+            while (rs.next()) {
+                User tempUser = new User();
+                tempUser.setId(rs.getInt("user_id"));
+                tempUser.setFirstName(rs.getString("first_name"));
+                tempUser.setLastName(rs.getString("last_name"));
+                tempUser.setbDate(rs.getDate("bDate"));
+                tempUser.setLogin("NA");
+                tempUser.setPassword("NA");
+                tempUser.setDevice(rs.getString("device"));
+                tempUser.setLastConnection(rs.getTimestamp("last_connection"));
+                tempUser.setEmail(rs.getString("email"));
+                tempUser.setPhone(rs.getString("telephone"));
+                Coord tempCoord = new Coord();
+                tempCoord.setId(0);
+                tempCoord.setLatitude(rs.getDouble("latitude"));
+                tempCoord.setLongitude(rs.getDouble("longitude"));
+                tempCoord.setAltitude(0);
+                tempUser.setCoord(tempCoord);
+                ProfileActivity.userList.add(tempUser);
+
+            }
+
             ProfileActivity.eventList = new Vector<Event>();
             query = "select * from Event, Coord where Event.coord_id = Coord.coord_id;";
             rs = st.executeQuery(query);
@@ -101,7 +131,17 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                 tempEvent.setStartDate(rs.getDate("start_date"));
                 tempEvent.setEndDate(rs.getDate("end_date"));
                 tempEvent.setTheme(ProfileActivity.interestList.get(rs.getInt("theme_id")-1));
-                //tempEvent.setOrganizers();
+                for(int i=0; i< ProfileActivity.userList.size(); i++)
+                {
+                    if(ProfileActivity.userList.get(i).getId() == rs.getInt("organizer_id"))
+                    {
+                        Vector<User> tempVec = new Vector<User>();
+                        tempVec.add(ProfileActivity.userList.get(i));
+                        tempEvent.setOrganizers(tempVec);
+                        break;
+                    }
+                }
+
                 tempEvent.setPlace_name(rs.getString("place_name"));
                 tempEvent.setAddress(rs.getString("address"));
                 tempEvent.setCoord(tempCoord);
@@ -109,10 +149,39 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
 
             }
 
+
+
         }
 
         return true;
     }
+
+    public static Boolean RefreshUserEvents(User userRef) throws SQLException, ClassNotFoundException {
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if(activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+            if (MainActivity.conn == null || MainActivity.conn.isClosed()) {
+                Class.forName("com.mysql.jdbc.Driver");
+                MainActivity.conn = DriverManager.getConnection(url, user, pass);
+            }
+            String query = "";
+            Statement st = MainActivity.conn.createStatement();
+
+
+            if(userRef != null) {
+                query = "DELETE from user_event where user_id ='" + userRef.getId() +"';";
+                st.execute(query);
+                for(int i=0; i<userRef.getFutureEvents().size();i++)
+                {
+                    query = "INSERT INTO user_event VALUES('" + userRef.getId() + "', '" + userRef.getFutureEvents().get(i).getId() + "');";
+                    st.execute(query);
+                }
+            }
+
+        }
+
+        return true;
+    }
+
 
 
     private class AsyncConnectToDB extends AsyncTask<Void, Integer, Void> implements LocationListener {
@@ -185,6 +254,9 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                 if (client_id == 0) {
                     throw new Exception("Invalid client ID");
                 }
+
+
+
                 query = "update User SET last_connection=now() WHERE user_id=' " + myself.getId() + "';";
                 boolean statementSuccess = st.execute(query);
 
@@ -279,7 +351,35 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                         interest.add(ProfileActivity.interestList.get(rs.getInt("theme_id")));
                     }
                     myself.setInterest(interest);
+
+                    query = "select * from user_event where user_id = '" + myself.getId() + "';";
+                    rs = st.executeQuery(query);
+                    Vector<Event> tempFutureEventVector = new Vector<Event>();
+                    while (rs.next()) {
+                        tempFutureEventVector.add(ProfileActivity.eventList.get(rs.getInt("event_id")));
+                    }
+                    myself.setFutureEvents(tempFutureEventVector);
+
+                    query = "select * from user_event ORDER BY event_id;";
+                    rs = st.executeQuery(query);
+                    LinkedList<Integer> templist = new LinkedList<Integer>();
+                    Integer previous = -1;
+                    while (rs.next()) {
+                        if(rs.getInt("event_id") == previous)
+                        {
+                            templist.add(rs.getInt("user_id"));
+                        }
+                        else
+                        {
+                            ProfileActivity.event_to_users.put(rs.getInt("event_id"), templist);
+                            templist = new LinkedList<Integer>();
+                            templist.add(rs.getInt("user_id"));
+                            previous = rs.getInt("user_id");
+                        }
+                    }
+
                 }
+
                 catch(Exception e) {
                     e.printStackTrace();
                     resultMessage = e.getMessage().toString();
@@ -346,10 +446,18 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         {
             EditText mPass = (EditText) findViewById(R.id.conn_Pass);
             EditText mEmail = (EditText) findViewById(R.id.conn_Email);
+
+            Button conn_button = (Button) findViewById(R.id.cxnButton);
+            conn_button.setVisibility(View.INVISIBLE);
+            Button ins_button = (Button) findViewById(R.id.registerButton);
+            ins_button.setVisibility(View.INVISIBLE);
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.connexionProgress);
+            progressBar.setVisibility(View.VISIBLE);
             AsyncConnectToDB asyncConnect = new AsyncConnectToDB();
             asyncConnect.LinkTask(this);
             asyncConnect.InsertData(mEmail.getText().toString(), mPass.getText().toString());
             asyncConnect.execute();
+
         }
         else if(client_id != 0)
         {
@@ -362,6 +470,12 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         else
         {
             Toast.makeText(getApplicationContext(), "L'application n'a actuellement pas de connection, et aucune session n'a pas été sauvegardé.", Toast.LENGTH_LONG).show();
+            Button conn_button = (Button) findViewById(R.id.cxnButton);
+            conn_button.setVisibility(View.VISIBLE);
+            Button ins_button = (Button) findViewById(R.id.registerButton);
+            ins_button.setVisibility(View.VISIBLE);
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.connexionProgress);
+            progressBar.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -389,6 +503,7 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         else
         {
             Toast.makeText(getApplicationContext(), "La connexion à échoué (" + message + ")", Toast.LENGTH_LONG).show();
+
         }
     }
 }

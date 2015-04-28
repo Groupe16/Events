@@ -90,16 +90,20 @@ public class ExploreActivity extends FragmentActivity implements OnTaskCompleted
                 AlertDialog.Builder builder = new AlertDialog.Builder(ExploreActivity.this);
                 for (int i = 0; i < ProfileActivity.eventList.size(); i++) {
                     if (ProfileActivity.eventList.get(i).getName().equals( marker.getTitle())) {
+                        String participants = "";
+                        //for(int i=0;)
                         builder.setMessage("Description: " + ProfileActivity.eventList.get(i).getDescription() + "\n"
                         + "Lieu: " + ProfileActivity.eventList.get(i).getPlace_name() + "\n"
-                        + "Addresse: " + ProfileActivity.eventList.get(i).getAddress() ).setTitle("Description étendu");
+                        + "Addresse: " + ProfileActivity.eventList.get(i).getAddress() + "\n"
+                        + "Prenom Organisateur: " + ProfileActivity.eventList.get(i).getOrganizers().get(0).getFirstName() + "\n" + participants ).setTitle("Description étendu");
                         if(user.getFutureEvents().contains(ProfileActivity.eventList.get(i))) {
                             final int id = i;
                             builder.setPositiveButton("Se désinscrire", new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int which) {
                                     user.getFutureEvents().remove(ProfileActivity.eventList.get(id));
-
+                                    AsyncRefreshEvent DBRefresh = new AsyncRefreshEvent();
+                                    DBRefresh.execute();
                                     dialog.dismiss();
                                 }
 
@@ -110,7 +114,8 @@ public class ExploreActivity extends FragmentActivity implements OnTaskCompleted
                             builder.setPositiveButton("S'inscrire", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     user.getFutureEvents().add(ProfileActivity.eventList.get(id));
-
+                                    AsyncRefreshEvent DBRefresh = new AsyncRefreshEvent();
+                                    DBRefresh.execute();
                                     dialog.dismiss();
                                 }
 
@@ -119,8 +124,6 @@ public class ExploreActivity extends FragmentActivity implements OnTaskCompleted
                         builder.setNegativeButton("Sortir", new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int which) {
-                                // Do nothing but close the dialog
-
                                 dialog.dismiss();
                             }
 
@@ -266,7 +269,50 @@ public class ExploreActivity extends FragmentActivity implements OnTaskCompleted
 
         @Override
         protected void onPostExecute(Void result) {
-            listener.onTaskCompleted(true,"Done");
+            if(listener != null) {
+                listener.onTaskCompleted(true, "Done");
+            }
+        }
+
+
+    }
+
+    private class AsyncRefreshEvent extends AsyncTask<Void, Integer, Void>
+    {
+
+        private OnTaskCompleted listener;
+
+        public void LinkTask(OnTaskCompleted listener) {
+            this.listener = listener;
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            try {
+                MainActivity.RefreshUserEvents(user);
+
+
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            if(listener != null) {
+                listener.onTaskCompleted(true, "Done");
+            }
         }
 
 

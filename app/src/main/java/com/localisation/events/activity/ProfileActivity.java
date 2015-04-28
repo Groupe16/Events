@@ -26,6 +26,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.Vector;
 
@@ -41,6 +46,7 @@ public class ProfileActivity extends ActionBarActivity {
     public static Vector<Event> eventList = new Vector<Event>();
     public static Vector<Theme> interestList = new Vector<Theme>();
     public static Vector<User> userList = new Vector<User>();
+    public static HashMap<Integer, List<Integer>> event_to_users = new HashMap<Integer, List<Integer>>() ;
     private DrawerLayout menuLayout; //Layout Principal
     private ListView menuElementsList; //Menu
     private ActionBarDrawerToggle menuToggle; //Gère l'ouverture et la fermeture du menu
