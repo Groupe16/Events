@@ -18,7 +18,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -444,10 +446,18 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         {
             EditText mPass = (EditText) findViewById(R.id.conn_Pass);
             EditText mEmail = (EditText) findViewById(R.id.conn_Email);
+
+            Button conn_button = (Button) findViewById(R.id.cxnButton);
+            conn_button.setVisibility(View.INVISIBLE);
+            Button ins_button = (Button) findViewById(R.id.registerButton);
+            ins_button.setVisibility(View.INVISIBLE);
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.connexionProgress);
+            progressBar.setVisibility(View.VISIBLE);
             AsyncConnectToDB asyncConnect = new AsyncConnectToDB();
             asyncConnect.LinkTask(this);
             asyncConnect.InsertData(mEmail.getText().toString(), mPass.getText().toString());
             asyncConnect.execute();
+
         }
         else if(client_id != 0)
         {
@@ -458,6 +468,12 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         else
         {
             Toast.makeText(getApplicationContext(), "L'application n'a actuellement pas de connection, et aucune session n'a pas été sauvegardé.", Toast.LENGTH_LONG).show();
+            Button conn_button = (Button) findViewById(R.id.cxnButton);
+            conn_button.setVisibility(View.VISIBLE);
+            Button ins_button = (Button) findViewById(R.id.registerButton);
+            ins_button.setVisibility(View.VISIBLE);
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.connexionProgress);
+            progressBar.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -479,6 +495,7 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         else
         {
             Toast.makeText(getApplicationContext(), "La connexion à échoué (" + message + ")", Toast.LENGTH_LONG).show();
+
         }
     }
 }

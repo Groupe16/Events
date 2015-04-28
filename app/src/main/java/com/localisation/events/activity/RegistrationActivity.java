@@ -174,6 +174,10 @@ public class RegistrationActivity extends ActionBarActivity implements OnTaskCom
         else
         {
             Toast.makeText(getApplicationContext(), "L'inscription a échoué. (" + message + ")", Toast.LENGTH_LONG).show();
+            Button validate_button = (Button) findViewById(R.id.validateInscription);
+            validate_button.setVisibility(View.VISIBLE);
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.inscriptionProgress);
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 
