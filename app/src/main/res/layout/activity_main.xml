@@ -90,7 +90,6 @@
         android:layout_height="wrap_content"
         android:text="Inscription"
         android:id="@+id/registerButton"
-
         android:layout_below="@+id/conn_Pass"
         android:layout_toLeftOf="@+id/cxnButton"
         android:layout_toStartOf="@+id/cxnButton"
@@ -110,5 +109,27 @@
         </LinearLayout>
        </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/inscriProgress"
+
+        android:layout_centerHorizontal="true"
+        android:indeterminate="false"
+        android:visibility="invisible"
+/>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/connexionProgress"
+
+        android:layout_centerHorizontal="true"
+        android:indeterminate="false"
+        android:visibility="invisible"
+/>
 
 </RelativeLayout>
