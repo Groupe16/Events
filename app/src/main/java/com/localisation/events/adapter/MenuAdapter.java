@@ -10,6 +10,7 @@ import com.localisation.events.activity.CreateEventActivity;
 import com.localisation.events.activity.EventsActivity;
 import com.localisation.events.activity.ExploreActivity;
 import com.localisation.events.activity.InterestActivity;
+import com.localisation.events.activity.InvitationsActivity;
 import com.localisation.events.activity.ProfileActivity;
 
 /**
@@ -58,6 +59,7 @@ public class MenuAdapter extends BaseAdapter {
             "Explorer",
             "Créer un événement",
             "Evénements",
+            "Invitations",
             "Interets"
     };
 
@@ -66,6 +68,7 @@ public class MenuAdapter extends BaseAdapter {
             ExploreActivity.class,
             CreateEventActivity.class,
             EventsActivity.class,
+            InvitationsActivity.class,
             InterestActivity.class
     };
 
