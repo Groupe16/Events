@@ -63,7 +63,7 @@ public class EventsActivity extends ActionBarActivity {
 
                 Intent intent = new Intent(EventsActivity.this, EventActivity.class);
                 intent.putExtra("user", user);
-                intent.putExtra("event", adapter.getEvents().get(position));
+                intent.putExtra("event", ProfileActivity.eventList.get(position));//adapter.getEvents().get(position));
                 startActivity(intent);
             }
         })
