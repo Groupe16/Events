@@ -111,7 +111,7 @@ public class EventsActivity extends ActionBarActivity {
     public void saveTheme(View view){
         String name = ((TextView) findViewById(R.id.name)).getText().toString();
         String group = ((TextView) findViewById(R.id.group)).getText().toString();
-        
+
         //TODO enregistre
     }
 }

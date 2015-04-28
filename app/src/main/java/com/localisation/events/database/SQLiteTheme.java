@@ -17,13 +17,10 @@ import java.util.List;
  */
 public class SQLiteTheme extends SQLiteOpenHelper {
 
-    static final int DATABASE_VERSION = 1;
-    static final String DATABASE_NAME = "events_db";
-
     Context context;
 
     public SQLiteTheme(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, SQLiteUser.DATABASE_NAME, null, SQLiteUser.DATABASE_VERSION);
         this.context = context;
     }
 
@@ -31,7 +28,7 @@ public class SQLiteTheme extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String CREATE_THEME_TABLE = "CREATE TABLE theme ( " +
-                "id INTEGER PRIMARY KEY, " +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "name TEXT, "+
                 "group TEXT )";
 
@@ -52,7 +49,7 @@ public class SQLiteTheme extends SQLiteOpenHelper {
 
     private static final String[] COLUMNS = {KEY_ID,KEY_NAME,KEY_GROUP};
 
-    public void addTheme(Theme theme, int id){
+    public void addTheme(Theme theme){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_ID, String.valueOf(theme.getId()));

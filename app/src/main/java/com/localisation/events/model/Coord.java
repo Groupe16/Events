@@ -7,6 +7,7 @@ import android.os.Parcelable;
  * Created by Zalila on 2015-03-29.
  */
 public class Coord  implements Parcelable{
+    private int id;
     private double longitude, latitude, altitude;
 
     public Coord() {
@@ -83,5 +84,14 @@ public class Coord  implements Parcelable{
 
     public void setAltitude(double altitude) {
         this.altitude = altitude;
+    }
+
+    public int getId() {
+
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
