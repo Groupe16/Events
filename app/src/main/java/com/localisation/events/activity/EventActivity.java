@@ -45,8 +45,10 @@ public class EventActivity extends ActionBarActivity {
             user = ExploreActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("create"))
             user = CreateEventActivity.userS;
-        else if (getIntent().getStringExtra("activity").equals("events"))
+        else if (getIntent().getStringExtra("activity").equals("events")) {
             user = EventsActivity.userS;
+            event = EventsActivity.eventS;
+        }
         else if (getIntent().getStringExtra("activity").equals("invitations"))
             user = InvitationsActivity.userS;
         else if (getIntent().getStringExtra("activity").equals("interest"))
