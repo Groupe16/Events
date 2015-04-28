@@ -256,14 +256,6 @@
                     android:layout_gravity="right"
                     android:onClick="updateClick"/>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Creer un evenement"
-                    android:id="@+id/createEventButton"
-                    android:layout_gravity="right"
-                    android:onClick="createEventClick" />
-
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

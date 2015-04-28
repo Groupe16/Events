@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
 
 import java.text.DateFormat;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.Vector;
 
 import com.localisation.events.R;
 import com.localisation.events.adapter.InterestAdapter;
@@ -35,6 +37,7 @@ import com.localisation.events.model.User;
 //pour afficher le profil de l'utilisateur
 public class ProfileActivity extends ActionBarActivity {
 
+    public static Vector<Theme> interestList = new Vector<Theme>();
     private DrawerLayout menuLayout; //Layout Principal
     private ListView menuElementsList; //Menu
     private ActionBarDrawerToggle menuToggle; //Gère l'ouverture et la fermeture du menu
@@ -48,8 +51,8 @@ public class ProfileActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-        SlideMenu slideMenu = new SlideMenu(this);
+        user = getIntent().getParcelableExtra("user");
+        SlideMenu slideMenu = new SlideMenu(this, user);
         menuLayout = slideMenu.getMenuLayout();
         menuElementsList = slideMenu.getMenuElementsList();
         menuToggle = slideMenu.getMenuToggle();
@@ -62,7 +65,7 @@ public class ProfileActivity extends ActionBarActivity {
         getSupportActionBar().setIcon(R.drawable.ic_drawer);
         //createSlideMenu();
 
-        user = getIntent().getParcelableExtra("user");
+
         activityTitle = user.getFirstName() + " " + user.getLastName();
         fillProfile(user);
 
@@ -106,11 +109,6 @@ public class ProfileActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    public void createEventClick(View view){
-        Intent intent = new Intent(ProfileActivity.this, CreateEventActivity.class);
-        intent.putExtra("user", user);
-        startActivity(intent);
-    }
 
     private void createSlideMenu() {
 

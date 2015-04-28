@@ -27,6 +27,7 @@ import com.localisation.events.*;
 import com.localisation.events.activity.ProfileActivity;
 import com.localisation.events.model.Coord;
 import com.localisation.events.model.OnTaskCompleted;
+import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
 
 import java.sql.Connection;
@@ -129,6 +130,14 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
                 if(client_id == 0)
                 {
                     throw new Exception("Invalid client ID");
+                }
+
+                query = "select * from Theme;";
+                rs = st.executeQuery(query);
+                rsmd = rs.getMetaData();
+
+                while(rs.next()) {
+                    ProfileActivity.interestList.add(new Theme(rs.getInt("theme_id"), rs.getString("name"), rs.getString("groupe")));
                 }
                 double latitude = 0.0;
                 double longitude = 0.0;

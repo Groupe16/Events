@@ -61,33 +61,39 @@ public class InterestAdapter extends BaseAdapter {
     private Theme[] mThumbIds;
 
     private Vector<Theme> getAll(){
-        Vector<Theme> themes = new Vector<>();
-        Theme theme = new Theme(0,"Concert","Musique");
-        themes.add(theme);
-        theme = new Theme(1,"Jazz","Musique");
-        themes.add(theme);
-        theme = new Theme(2,"Rock","Musique");
-        themes.add(theme);
-        theme = new Theme(3,"Classique","Musique");
-        themes.add(theme);
-        theme = new Theme(4,"Musqiues Electroniques","Musique");
-        themes.add(theme);
-        theme = new Theme(5,"Exposition","Art");
-        themes.add(theme);
-        theme = new Theme(6,"Musée","Art");
-        themes.add(theme);
-        theme = new Theme(7,"Escapade","Sorties");
-        themes.add(theme);
-        theme = new Theme(8,"Bar","Sorties");
-        themes.add(theme);
-        theme = new Theme(9,"Restaurant","Sorties");
-        themes.add(theme);
-        theme = new Theme(10,"Cinéma","Sorties");
-        themes.add(theme);
+        if(ProfileActivity.interestList != null && ProfileActivity.interestList.size() > 0)
+        {
+            return ProfileActivity.interestList;
+        }
+        else {
+            Vector<Theme> themes = new Vector<>();
+            Theme theme = new Theme(0, "Concert", "Musique");
+            themes.add(theme);
+            theme = new Theme(1, "Jazz", "Musique");
+            themes.add(theme);
+            theme = new Theme(2, "Rock", "Musique");
+            themes.add(theme);
+            theme = new Theme(3, "Classique", "Musique");
+            themes.add(theme);
+            theme = new Theme(4, "Musqiues Electroniques", "Musique");
+            themes.add(theme);
+            theme = new Theme(5, "Exposition", "Art");
+            themes.add(theme);
+            theme = new Theme(6, "Musée", "Art");
+            themes.add(theme);
+            theme = new Theme(7, "Escapade", "Sorties");
+            themes.add(theme);
+            theme = new Theme(8, "Bar", "Sorties");
+            themes.add(theme);
+            theme = new Theme(9, "Restaurant", "Sorties");
+            themes.add(theme);
+            theme = new Theme(10, "Cinéma", "Sorties");
+            themes.add(theme);
 
-        theme = new Theme(11,"Autre","");
-        themes.add(theme);
-        return themes;
+            theme = new Theme(11, "Autre", "");
+            themes.add(theme);
+            return themes;
+        }
     }
 }
 

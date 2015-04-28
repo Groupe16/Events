@@ -48,7 +48,7 @@ public class CreateEventActivity extends ActionBarActivity implements OnTaskComp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
         user = getIntent().getParcelableExtra("user");
-        SlideMenu slideMenu = new SlideMenu(this);
+        SlideMenu slideMenu = new SlideMenu(this, user);
         menuLayout = slideMenu.getMenuLayout();
         menuElementsList = slideMenu.getMenuElementsList();
         menuToggle = slideMenu.getMenuToggle();
