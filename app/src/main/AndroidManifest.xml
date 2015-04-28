@@ -83,6 +83,14 @@
             android:name=".activity.InvitationActivity"
             android:label="@string/title_activity_invitations" >
         </activity>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".activity.InterestActivity"
+            android:label="@string/title_activity_interest" >
+        </activity>
     </application>
 
 </manifest>

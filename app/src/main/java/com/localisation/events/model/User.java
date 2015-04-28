@@ -16,19 +16,20 @@ public class User  implements Parcelable{
     private int id;
     private String firstName, lastName;
     private String city;
-    private Date bDate;
-    private Vector<Theme> interest;
-    private Vector<Event> organizedEvents, futureEvents, pastEvents;
-    private Vector<Invitation> invitations;
+    private Date bDate = new Date(19710101);
+    private Vector<Theme> interest = new Vector<>();
+    private Vector<Event> organizedEvents = new Vector<>(), futureEvents = new Vector<>(), pastEvents = new Vector<>();
+    private Vector<Invitation> invitations = new Vector<>();
     private String login;
     private String password;
+    private String email;
     private String phone;
     private String device;
-    private String email;
-    private Timestamp lastConnection;
+    private Timestamp lastConnection = new Timestamp(71,01,01,00,00,00,00);
     private Coord coord;
 
     public User() {
+
     }
 
     @Override
@@ -44,45 +45,17 @@ public class User  implements Parcelable{
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeString(city);
-        if(bDate == null)
-        {
-            bDate = new Date(19710101);
-        }
         dest.writeString(String.valueOf(bDate));
-        if(interest == null)
-        {
-            interest = new Vector<Theme>();
-        }
         dest.writeParcelableArray(interest.toArray(new Theme[interest.size()]), flags);
-        if(organizedEvents == null)
-        {
-            organizedEvents = new Vector<Event>();
-        }
         dest.writeParcelableArray(organizedEvents.toArray(new Event[organizedEvents.size()]), flags);
-        if(futureEvents == null)
-        {
-            futureEvents = new Vector<Event>();
-        }
         dest.writeParcelableArray(futureEvents.toArray(new Event[futureEvents.size()]), flags);
-        if(pastEvents == null)
-        {
-            pastEvents = new Vector<Event>();
-        }
         dest.writeParcelableArray(pastEvents.toArray(new Event[pastEvents.size()]), flags);
-        if(invitations == null)
-        {
-            invitations = new Vector<Invitation>();
-        }
         dest.writeParcelableArray(invitations.toArray(new Invitation[invitations.size()]), flags);
         dest.writeString(login);
         dest.writeString(password);
         dest.writeString(email);
         dest.writeString(phone);
         dest.writeString(device);
-        if(lastConnection == null)
-        {
-            lastConnection = new Timestamp(71,01,01,00,00,00,00);
-        }
         dest.writeString(String.valueOf(lastConnection));
         dest.writeParcelable(coord, flags);
     }
@@ -277,7 +250,9 @@ public class User  implements Parcelable{
         return lastConnection;
     }
 
-    public void setLastConnection(Timestamp lastConnection) { this.lastConnection = lastConnection; }
+    public void setLastConnection(Timestamp lastConnection) {
+        this.lastConnection = lastConnection;
+    }
 
     public Coord getCoord() {
         return coord;

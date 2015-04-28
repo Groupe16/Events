@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.localisation.events.R;
 import com.localisation.events.adapter.MenuAdapter;
+import com.localisation.events.model.User;
 
 /**
  * Created by Zalila on 2015-04-23.
@@ -24,10 +25,12 @@ public class SlideMenu {
     private ActionBarDrawerToggle menuToggle; //Gère l'ouverture et la fermeture du menu
 
     private CharSequence menuTitle = "Menu";
-    private CharSequence activityTitle = "Profil";
+    private CharSequence activityTitle = "";
 
+    private User user;
 
-    public SlideMenu(final Activity context) {
+    public SlideMenu(final Activity context, final User user) {
+        this.user = user;
 //recupèration du layout et la liste
         menuLayout = (DrawerLayout) context.findViewById(R.id.menu_layout);
         menuElementsList = (ListView) context.findViewById(R.id.menu_elements);
@@ -72,6 +75,7 @@ public class SlideMenu {
             public void onItemClick(AdapterView<?> arg0, View view, int position,long id) {
 
                 Intent intent = new Intent(context, adapter.getAction(position));
+                intent.putExtra("user", user);
                 context.startActivity(intent);
 
             }

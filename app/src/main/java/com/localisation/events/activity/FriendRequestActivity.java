@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.localisation.events.R;
 import com.localisation.events.menu.SlideMenu;
+import com.localisation.events.model.User;
 
 //pour afficher la liste des demandes d'amis
 public class FriendRequestActivity extends ActionBarActivity {
@@ -22,12 +23,16 @@ public class FriendRequestActivity extends ActionBarActivity {
     private CharSequence menuTitle = "Menu";
     private CharSequence activityTitle = "Demande d'ami";
 
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_request);
 
-        SlideMenu slideMenu = new SlideMenu(this);
+        user = getIntent().getParcelableExtra("user");
+
+        SlideMenu slideMenu = new SlideMenu(this, user);
         menuLayout = slideMenu.getMenuLayout();
         menuElementsList = slideMenu.getMenuElementsList();
         menuToggle = slideMenu.getMenuToggle();

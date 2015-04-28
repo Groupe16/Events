@@ -4,14 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.localisation.events.activity.CreateEventActivity;
-import com.localisation.events.activity.EventsActivity;
-import com.localisation.events.activity.ExploreActivity;
-import com.localisation.events.activity.NotificationActivity;
-import com.localisation.events.activity.ProfileActivity;
-import com.localisation.events.activity.SettingsActivity;
+import com.localisation.events.R;
 import com.localisation.events.model.Theme;
 
 import java.util.Vector;
@@ -19,17 +16,20 @@ import java.util.Vector;
 /**
  * Created by Zalila on 2015-04-26.
  */
-public class InterestAdapter extends BaseAdapter {
+public class InterestButtonAdapter extends BaseAdapter {
     private Context mContext;
+    private Vector<Theme> themes;
 
-    public InterestAdapter(Context c, Vector<Theme> interests) {
+    public InterestButtonAdapter(Context c, Vector<Theme> interests) {
         mContext = c;
-        mThumbIds = (Theme[]) interests.toArray();
+        for (Theme t: interests)
+            mThumbIds.add(t.getName());//(Theme[]) interests.toArray();
+        themes = getAll();
     }
 
     @Override
     public int getCount() {
-        return mThumbIds.length;
+        return themes.size();//mThumbIds.size();//length;
     }
 
     @Override
@@ -44,23 +44,31 @@ public class InterestAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        LinearLayout linearLayout;
         TextView textView;
-        if (convertView == null) {
-            textView = new TextView(mContext);
-            //textView.setLayoutParams(new GridView.LayoutParams(230, 230));
-            //textView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            textView.setPadding(8, 8, 8, 8);
-        } else {
-            textView = (TextView) convertView;
+        ImageView imageView;
+        linearLayout = new LinearLayout(mContext);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setPadding(8, 8, 8, 8);
+        textView = new TextView(mContext);
+        imageView = new ImageView(mContext);
+        linearLayout.addView(textView);
+        linearLayout.addView(imageView);
+        textView.setText(themes.get(position).getName());
+        if (mThumbIds.indexOf(themes.get(position).getName()) != -1) {
+            imageView.setImageResource(R.drawable.ok);
+        }else {
+            imageView.setImageResource(R.drawable.vide);
         }
-
-        textView.setText(mThumbIds[position].getName());
-        return textView;
+        imageView.getLayoutParams().height = 30;
+        imageView.getLayoutParams().width = 30;
+        imageView.requestLayout();
+        return linearLayout;
     }
 
-    private Theme[] mThumbIds;
+    public Vector<String> mThumbIds = new Vector<>();
 
-    private Vector<Theme> getAll(){
+    public Vector<Theme> getAll(){
         Vector<Theme> themes = new Vector<>();
         Theme theme = new Theme(0,"Concert","Musique");
         themes.add(theme);

@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.localisation.events.R;
 import com.localisation.events.menu.SlideMenu;
+import com.localisation.events.model.User;
 
 //pour afficher une liste d'événements
 public class EventsActivity extends ActionBarActivity {
@@ -22,12 +23,17 @@ public class EventsActivity extends ActionBarActivity {
     private CharSequence menuTitle = "Menu";
     private CharSequence activityTitle = "Evénements";
 
+    private User user;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
 
-        SlideMenu slideMenu = new SlideMenu(this);
+        user = getIntent().getParcelableExtra("user");
+
+        SlideMenu slideMenu = new SlideMenu(this, user);
         menuLayout = slideMenu.getMenuLayout();
         menuElementsList = slideMenu.getMenuElementsList();
         menuToggle = slideMenu.getMenuToggle();
