@@ -1,9 +1,12 @@
 package com.localisation.events.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.localisation.events.R;
@@ -55,6 +59,57 @@ public class ExploreActivity extends FragmentActivity implements OnTaskCompleted
         refresh.LinkTask(this);
         refresh.execute();
         setUpMapIfNeeded();
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ExploreActivity.this);
+                for (int i = 0; i < ProfileActivity.eventList.size(); i++) {
+                    if (ProfileActivity.eventList.get(i).getName().equals( marker.getTitle())) {
+                        builder.setMessage("Description: " + ProfileActivity.eventList.get(i).getDescription() + "\n"
+                        + "Lieu: " + ProfileActivity.eventList.get(i).getPlace_name() + "\n"
+                        + "Addresse: " + ProfileActivity.eventList.get(i).getAddress() ).setTitle("Description étendu");
+                        if(user.getFutureEvents().contains(ProfileActivity.eventList.get(i))) {
+                            final int id = i;
+                            builder.setPositiveButton("Se désinscrire", new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int which) {
+                                    user.getFutureEvents().remove(ProfileActivity.eventList.get(id));
+
+                                    dialog.dismiss();
+                                }
+
+                            });
+                        }
+                        else {
+                            final int id = i;
+                            builder.setPositiveButton("S'inscrire", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    user.getFutureEvents().add(ProfileActivity.eventList.get(id));
+
+                                    dialog.dismiss();
+                                }
+
+                            });
+                        }
+                        builder.setNegativeButton("Sortir", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Do nothing but close the dialog
+
+                                dialog.dismiss();
+                            }
+
+                        });
+
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+                }
+                return false;
+            }
+        });
+
 
 
         SlideMenu slideMenu = new SlideMenu(this, user);

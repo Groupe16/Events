@@ -52,7 +52,7 @@ public class EventsActivity extends ActionBarActivity {
         getSupportActionBar().setIcon(R.drawable.ic_drawer);
 
         final EventsAdapter adapter = new EventsAdapter(this, user);
-        final ListView listInterest = (ListView) findViewById(R.id.interestListView);
+        /*final ListView listInterest = (ListView) findViewById(R.id.interestListView);
         listInterest.setAdapter(adapter);
 
         listInterest.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -65,7 +65,8 @@ public class EventsActivity extends ActionBarActivity {
                 intent.putExtra("event", adapter.getEvents().get(position));
                 startActivity(intent);
             }
-        });
+        })
+        */;
     }
 
 
