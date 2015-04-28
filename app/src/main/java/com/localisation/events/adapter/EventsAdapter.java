@@ -24,8 +24,8 @@ public class EventsAdapter extends BaseAdapter {
 
     public EventsAdapter(Context c, User user) {
         mContext = c;
-        events.addAll(user.getPastEvents());
-        events.addAll(user.getFutureEvents());
+        //events.addAll(user.getPastEvents());
+        events.addAll(user.getOrganizedEvents());
     }
 
     @Override
