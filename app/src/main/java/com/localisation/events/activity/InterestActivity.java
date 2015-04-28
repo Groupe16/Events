@@ -10,25 +10,33 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.localisation.events.R;
+import com.localisation.events.adapter.InterestAdapter;
+import com.localisation.events.adapter.InterestButtonAdapter;
 import com.localisation.events.menu.SlideMenu;
+import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
 
-//pour rédiger le message de l'invitation
-public class InvitationActivity extends ActionBarActivity {
+import java.util.Vector;
+
+public class InterestActivity extends ActionBarActivity {
 
     private DrawerLayout menuLayout; //Layout Principal
     private ListView menuElementsList; //Menu
     private ActionBarDrawerToggle menuToggle; //Gère l'ouverture et la fermeture du menu
 
     private CharSequence menuTitle = "Menu";
-    private CharSequence activityTitle = "Invitation à un événement";
+    private CharSequence activityTitle = "Intérêts";
 
     private User user;
+
+    public User getUser() {
+        return user;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_invitation);
+        setContentView(R.layout.activity_interest);
 
         user = getIntent().getParcelableExtra("user");
 
@@ -43,15 +51,28 @@ public class InvitationActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_drawer);
+        //createSlideMenu();
 
+        user = getIntent().getParcelableExtra("user");
+        Vector<Theme> themes = new Vector<>();
+        Theme theme = new Theme(0,"Concert","Musique");
+        themes.add(theme);
+        theme = new Theme(7,"Escapade","Sorties");
+        themes.add(theme);
+        theme = new Theme(8,"Bar","Sorties");
+        themes.add(theme);
+        user.setInterest(themes);
 
+        InterestButtonAdapter adapter = new InterestButtonAdapter(this, user.getInterest());
+        ListView listInterest = (ListView) findViewById(R.id.interestListView);
+        listInterest.setAdapter(adapter);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_invitation, menu);
+        getMenuInflater().inflate(R.menu.menu_interest, menu);
         return true;
     }
 
@@ -70,15 +91,15 @@ public class InvitationActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     // masquer et réafficher les éléments du menu
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // Cache l'élément du menu optionnel à l'ouverture et le fait réapparaitre à la fermeture
         boolean drawerOpen = menuLayout.isDrawerOpen(menuElementsList);
-        menu.findItem(R.id.action_search).setVisible(!drawerOpen);
+//        menu.findItem(R.id.action_search).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
-
 
     @Override
     public void setTitle(CharSequence title) {
@@ -103,4 +124,5 @@ public class InvitationActivity extends ActionBarActivity {
         // Pass any configuration change to the drawer toggls
         menuToggle.onConfigurationChanged(newConfig);
     }
+
 }

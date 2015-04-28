@@ -14,6 +14,12 @@ public class Theme  implements Parcelable{
     public Theme() {
     }
 
+    public Theme(int id, String name, String group) {
+        this.id = id;
+        this.name = name;
+        this.group = group;
+    }
+
     @Override
     public int describeContents()
     {

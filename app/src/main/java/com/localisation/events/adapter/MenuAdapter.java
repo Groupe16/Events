@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.localisation.events.activity.CreateEventActivity;
 import com.localisation.events.activity.EventsActivity;
 import com.localisation.events.activity.ExploreActivity;
+import com.localisation.events.activity.InterestActivity;
 import com.localisation.events.activity.NotificationActivity;
 import com.localisation.events.activity.ProfileActivity;
 import com.localisation.events.activity.SettingsActivity;
@@ -62,6 +63,7 @@ public class MenuAdapter extends BaseAdapter {
             "Créer un événement",
             "Evénements",
             "Evénements passés",
+            "Interets",
             "Réglages"
     };
 
@@ -73,6 +75,7 @@ public class MenuAdapter extends BaseAdapter {
             CreateEventActivity.class,
             EventsActivity.class,
             EventsActivity.class,
+            InterestActivity.class,
             SettingsActivity.class
     };
 

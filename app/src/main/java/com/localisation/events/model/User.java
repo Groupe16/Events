@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Vector;
 
 /**
@@ -15,19 +16,20 @@ public class User  implements Parcelable{
     private int id;
     private String firstName, lastName;
     private String city;
-    private Date bDate;
-    private Vector<Theme> interest;
-    private Vector<Event> organizedEvents, futureEvents, pastEvents;
-    private Vector<Invitation> invitations;
+    private Date bDate = new Date(19710101);
+    private Vector<Theme> interest = new Vector<>();
+    private Vector<Event> organizedEvents = new Vector<>(), futureEvents = new Vector<>(), pastEvents = new Vector<>();
+    private Vector<Invitation> invitations = new Vector<>();
     private String login;
     private String password;
     private String email;
     private String phone;
     private String device;
-    private Time lastConnection;
+    private Timestamp lastConnection = new Timestamp(71,01,01,00,00,00,00);
     private Coord coord;
 
     public User() {
+
     }
 
     @Override
@@ -111,7 +113,7 @@ public class User  implements Parcelable{
         this.email = in.readString();
         this.phone = in.readString();
         this.device = in.readString();
-        this.lastConnection = Time.valueOf(in.readString());
+        this.lastConnection = Timestamp.valueOf(in.readString());
         this.coord = in.readParcelable(Coord.class.getClassLoader());
     }
 
@@ -244,11 +246,11 @@ public class User  implements Parcelable{
         this.device = device;
     }
 
-    public Time getLastConnection() {
+    public Timestamp getLastConnection() {
         return lastConnection;
     }
 
-    public void setLastConnection(Time lastConnection) {
+    public void setLastConnection(Timestamp lastConnection) {
         this.lastConnection = lastConnection;
     }
 
