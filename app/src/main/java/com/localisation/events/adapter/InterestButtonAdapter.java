@@ -22,7 +22,8 @@ public class InterestButtonAdapter extends BaseAdapter {
 
     public InterestButtonAdapter(Context c, Vector<Theme> interests) {
         mContext = c;
-        mThumbIds = interests;//(Theme[]) interests.toArray();
+        for (Theme t: interests)
+            mThumbIds.add(t.getName());//(Theme[]) interests.toArray();
         themes = getAll();
     }
 
@@ -46,29 +47,28 @@ public class InterestButtonAdapter extends BaseAdapter {
         LinearLayout linearLayout;
         TextView textView;
         ImageView imageView;
-        if (convertView == null) {
-            linearLayout = new LinearLayout(mContext);
-            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-            linearLayout.setPadding(8, 8, 8, 8);
-            //linearLayout.setLayoutParams(new LinearLayout.LayoutParams(40, 100));
-        } else {
-            linearLayout = (LinearLayout) convertView;
-        }
+        linearLayout = new LinearLayout(mContext);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setPadding(8, 8, 8, 8);
         textView = new TextView(mContext);
         imageView = new ImageView(mContext);
         linearLayout.addView(textView);
         linearLayout.addView(imageView);
-        textView.setText(themes.get(position).getName());//mThumbIds[position].getName());
-        if (mThumbIds.contains(themes.get(position)))
+        textView.setText(themes.get(position).getName());
+        if (mThumbIds.indexOf(themes.get(position).getName()) != -1) {
             imageView.setImageResource(R.drawable.ok);
-        else
+        }else {
             imageView.setImageResource(R.drawable.vide);
+        }
+        imageView.getLayoutParams().height = 30;
+        imageView.getLayoutParams().width = 30;
+        imageView.requestLayout();
         return linearLayout;
     }
 
-    private Vector<Theme> mThumbIds;
+    public Vector<String> mThumbIds = new Vector<>();
 
-    private Vector<Theme> getAll(){
+    public Vector<Theme> getAll(){
         Vector<Theme> themes = new Vector<>();
         Theme theme = new Theme(0,"Concert","Musique");
         themes.add(theme);
