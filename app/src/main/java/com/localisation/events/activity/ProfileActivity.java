@@ -49,12 +49,39 @@ public class ProfileActivity extends ActionBarActivity {
     private CharSequence activityTitle = "Profil";
 
     private User user;
+    public static User userS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        user = getIntent().getParcelableExtra("user");
+        //user = getIntent().getParcelableExtra("user");
+        if (getIntent().getStringExtra("activity").equals("main"))
+            user = MainActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("registration"))
+            user = RegistrationActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("explore"))
+            user = ExploreActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("create"))
+            user = CreateEventActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("events"))
+            user = EventsActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("invitations"))
+            user = InvitationsActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("interest"))
+            user = ExploreActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("profile"))
+            user = ProfileActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("maps"))
+            user = InvitationsMapActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("invitation"))
+            user = InvitationActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("event"))
+            user = EventActivity.userS;
+
+        userS = user;
+
+
         SlideMenu slideMenu = new SlideMenu(this, user);
         menuLayout = slideMenu.getMenuLayout();
         menuElementsList = slideMenu.getMenuElementsList();
@@ -108,7 +135,9 @@ public class ProfileActivity extends ActionBarActivity {
 
     public void updateClick(View view){
         Intent intent = new Intent(ProfileActivity.this, RegistrationActivity.class);
-        intent.putExtra("user", user);
+        //intent.putExtra("user", user);
+        userS = user;
+        intent.putExtra("activity", "profile");
         startActivity(intent);
     }
 

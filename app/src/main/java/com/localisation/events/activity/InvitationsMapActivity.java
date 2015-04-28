@@ -30,6 +30,7 @@ public class InvitationsMapActivity extends FragmentActivity {
     private CharSequence activityTitle = "Invitations";
 
     private User user;
+    public static User userS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,30 @@ public class InvitationsMapActivity extends FragmentActivity {
         setContentView(R.layout.activity_invitations_map);
         setUpMapIfNeeded();
 
-        user = getIntent().getParcelableExtra("user");
+        //user = getIntent().getParcelableExtra("user");
+
+        if (getIntent().getStringExtra("activity").equals("main"))
+            user = MainActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("registration"))
+            user = RegistrationActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("explore"))
+            user = ExploreActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("create"))
+            user = CreateEventActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("events"))
+            user = EventsActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("invitations"))
+            user = InvitationsActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("interest"))
+            user = ExploreActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("profile"))
+            user = ProfileActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("maps"))
+            user = InvitationsMapActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("invitation"))
+            user = InvitationActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("event"))
+            user = EventActivity.userS;
 
         SlideMenu slideMenu = new SlideMenu(this, user);
         menuLayout = slideMenu.getMenuLayout();

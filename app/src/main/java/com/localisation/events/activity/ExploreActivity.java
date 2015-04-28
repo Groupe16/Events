@@ -48,13 +48,38 @@ public class ExploreActivity extends FragmentActivity implements OnTaskCompleted
     private CharSequence activityTitle = "Explorer";
 
     private User user;
+    public static User userS;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore);
-        user = getIntent().getParcelableExtra("user");
+        //user = getIntent().getParcelableExtra("user");
+
+        if (getIntent().getStringExtra("activity").equals("main"))
+            user = MainActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("registration"))
+            user = RegistrationActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("explore"))
+            user = ExploreActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("create"))
+            user = CreateEventActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("events"))
+            user = EventsActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("invitations"))
+            user = InvitationsActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("interest"))
+            user = ExploreActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("profile"))
+            user = ProfileActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("maps"))
+            user = InvitationsMapActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("invitation"))
+            user = InvitationActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("event"))
+            user = EventActivity.userS;
+
         AsyncRefreshDB refresh = new AsyncRefreshDB();
         refresh.LinkTask(this);
         refresh.execute();

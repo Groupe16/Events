@@ -24,6 +24,9 @@ public class Event  implements Parcelable{
     private Coord coord;
 
     public Event() {
+        startDate = new Date(19710101); endDate = new Date(19710101);
+        organizers = new Vector<>();
+        participants = new Vector<>();
     }
 
     @Override
@@ -39,11 +42,11 @@ public class Event  implements Parcelable{
         dest.writeString(name);
         dest.writeString(description);
         dest.writeString(String.valueOf(visibility));
-        dest.writeString(String.valueOf(startDate));
-        dest.writeString(String.valueOf(endDate));
+        dest.writeLong(startDate.getTime());
+        dest.writeLong(endDate.getTime());
         dest.writeParcelable(theme, flags);
-        dest.writeParcelableArray(organizers.toArray(new User[organizers.size()]), flags);
-        dest.writeParcelableArray(participants.toArray(new User[participants.size()]), flags);
+        /*dest.writeParcelableArray(organizers.toArray(new User[organizers.size()]), flags);
+        dest.writeParcelableArray(participants.toArray(new User[participants.size()]), flags);*/
         dest.writeString(place_name);
         dest.writeString(address);
         dest.writeParcelable(coord, flags);
@@ -71,13 +74,13 @@ public class Event  implements Parcelable{
         this.name = in.readString();
         this.description = in.readString();
         this.visibility = Boolean.valueOf(in.readString());
-        String startDate = in.readString();
-        if(startDate != null)
-        this.startDate = Date.valueOf(startDate);
-        String endDate = in.readString();
-        if(endDate != null)
-            this.endDate = Date.valueOf(endDate);;
-        User[] organizers = in.createTypedArray(User.CREATOR);
+        long startDate = in.readLong();
+        if(startDate > 0)
+            this.startDate = new Date(startDate *1000);
+        long endDate = in.readLong();
+        if(endDate > 0)
+            this.endDate = new Date(endDate *1000);
+        /*User[] organizers = in.createTypedArray(User.CREATOR);
         this.organizers = new Vector<>();
         for (int i = 0; i < organizers.length; i++){
             this.organizers.addElement(organizers[i]);
@@ -86,7 +89,7 @@ public class Event  implements Parcelable{
         this.participants = new Vector<>();
         for (int i = 0; i < participants.length; i++){
             this.participants.addElement(participants[i]);
-        }
+        }*/
         this.place_name = in.readString();
         this.address = in.readString();
         this.coord = in.readParcelable(Coord.class.getClassLoader());

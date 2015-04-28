@@ -26,13 +26,20 @@ import java.text.SimpleDateFormat;
 public class RegistrationActivity extends ActionBarActivity implements OnTaskCompleted {
 
     private User user;
+    public static User userS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        user = getIntent().getParcelableExtra("user");
+        //user = getIntent().getParcelableExtra("user");
+        if (getIntent().getStringExtra("activity").equals("main"))
+            user = MainActivity.userS;
+        else
+            user = ProfileActivity.userS;
+        userS = user;
+
         if (user != new User()){
             //fillFields(user);
         }
@@ -168,7 +175,8 @@ public class RegistrationActivity extends ActionBarActivity implements OnTaskCom
     {
         if(success)
         {
-            Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+            Intent intent = new Intent(RegistrationActivity.this, ProfileActivity.class);
+            intent.putExtra("activity", "registration");
             startActivity(intent);
         }
         else

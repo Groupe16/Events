@@ -30,6 +30,11 @@ public class User  implements Parcelable{
 
     public User() {
 
+        bDate = new Date(19710101);
+        interest = new Vector<>();
+        organizedEvents = new Vector<>(); futureEvents = new Vector<>(); pastEvents = new Vector<>();
+        invitations = new Vector<>();
+        lastConnection = new Timestamp(71,01,01,00,00,00,00);
     }
 
     @Override
@@ -45,14 +50,12 @@ public class User  implements Parcelable{
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeString(city);
-        dest.writeString(String.valueOf(bDate));
-        /*
+        dest.writeLong(bDate.getTime());
         dest.writeParcelableArray(interest.toArray(new Theme[interest.size()]), flags);
         dest.writeParcelableArray(organizedEvents.toArray(new Event[organizedEvents.size()]), flags);
         dest.writeParcelableArray(futureEvents.toArray(new Event[futureEvents.size()]), flags);
         dest.writeParcelableArray(pastEvents.toArray(new Event[pastEvents.size()]), flags);
         dest.writeParcelableArray(invitations.toArray(new Invitation[invitations.size()]), flags);
-        */
         dest.writeTypedArray(interest.toArray(new Theme[interest.size()]), flags);
         dest.writeTypedArray(organizedEvents.toArray(new Event[organizedEvents.size()]), flags);
         dest.writeTypedArray(futureEvents.toArray(new Event[futureEvents.size()]), flags);
@@ -63,7 +66,7 @@ public class User  implements Parcelable{
         dest.writeString(email);
         dest.writeString(phone);
         dest.writeString(device);
-        dest.writeString(String.valueOf(lastConnection));
+        dest.writeLong(lastConnection.getTime());
         dest.writeParcelable(coord, flags);
     }
 
@@ -89,7 +92,9 @@ public class User  implements Parcelable{
         this.firstName = in.readString();
         this.lastName = in.readString();
         this.city = in.readString();
-        this.bDate = Date.valueOf(in.readString());
+        long date = in.readLong();
+        if(date > 0)
+            this.bDate = new Date(date *1000);
         Theme[] interests = in.createTypedArray(Theme.CREATOR);
         this.interest = new Vector<>();
         for (int i = 0; i < interests.length; i++){
@@ -120,7 +125,9 @@ public class User  implements Parcelable{
         this.email = in.readString();
         this.phone = in.readString();
         this.device = in.readString();
-        this.lastConnection = Timestamp.valueOf(in.readString());
+        long time = in.readLong();
+        if(time > 0)
+            this.lastConnection = new Timestamp(time *1000);
         this.coord = in.readParcelable(Coord.class.getClassLoader());
     }
 

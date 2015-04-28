@@ -34,6 +34,7 @@ public class Coord  implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
+        dest.writeInt(id);
         dest.writeDouble(longitude);
         dest.writeDouble(latitude);
         dest.writeDouble(altitude);
@@ -58,6 +59,7 @@ public class Coord  implements Parcelable{
 
     //Constructeur avec Parcel
     public Coord(Parcel in) {
+        this.id = in.readInt();
         this.longitude = in.readDouble();
         this.latitude = in.readDouble();
         this.altitude = in.readDouble();

@@ -31,8 +31,8 @@ public class Invitation  implements Parcelable{
         dest.writeInt(id);
         dest.writeParcelable(event, flags);
         dest.writeString(message);
-        dest.writeParcelable(sender, flags);
-        dest.writeParcelable(receiver, flags);
+        //dest.writeParcelable(sender, flags);
+        //dest.writeParcelable(receiver, flags);
         dest.writeString(String.valueOf(date));
     }
 
@@ -57,8 +57,8 @@ public class Invitation  implements Parcelable{
         this.id = in.readInt();
         this.event = in.readParcelable(Event.class.getClassLoader());
         this.message = in.readString();
-        this.sender = in.readParcelable(User.class.getClassLoader());
-        this.receiver = in.readParcelable(User.class.getClassLoader());
+        //this.sender = in.readParcelable(User.class.getClassLoader());
+        //this.receiver = in.readParcelable(User.class.getClassLoader());
         this.date = Date.valueOf(in.readString());
     }
 

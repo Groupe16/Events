@@ -72,6 +72,15 @@ public class MenuAdapter extends BaseAdapter {
             InterestActivity.class
     };
 
+    public static String[] activities = {
+            "profile",
+            "explore",
+            "create",
+            "events",
+            "invitations",
+            "interest"
+    };
+
     public Class getAction(int position){
         return actions[position];
     }

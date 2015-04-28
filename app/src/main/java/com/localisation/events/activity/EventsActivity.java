@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.localisation.events.R;
 import com.localisation.events.adapter.EventsAdapter;
 import com.localisation.events.menu.SlideMenu;
+import com.localisation.events.model.Event;
 import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
 
@@ -31,6 +32,7 @@ public class EventsActivity extends ActionBarActivity {
 
     private User user;
     private ListView listInterest;
+    public static User userS;
 
 
     @Override
@@ -38,7 +40,30 @@ public class EventsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
 
-        user = getIntent().getParcelableExtra("user");
+        //user = getIntent().getParcelableExtra("user");
+
+        if (getIntent().getStringExtra("activity").equals("main"))
+            user = MainActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("registration"))
+            user = RegistrationActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("explore"))
+            user = ExploreActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("create"))
+            user = CreateEventActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("events"))
+            user = EventsActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("invitations"))
+            user = InvitationsActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("interest"))
+            user = ExploreActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("profile"))
+            user = ProfileActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("maps"))
+            user = InvitationsMapActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("invitation"))
+            user = InvitationActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("event"))
+            user = EventActivity.userS;
 
         SlideMenu slideMenu = new SlideMenu(this, user);
         menuLayout = slideMenu.getMenuLayout();
@@ -62,14 +87,18 @@ public class EventsActivity extends ActionBarActivity {
                 TextView textView = (TextView) listInterest.getAdapter().getView(position, view, parent);
 
                 Intent intent = new Intent(EventsActivity.this, EventActivity.class);
-                intent.putExtra("user", user);
+                //intent.putExtra("user", user);
+                userS = user;
+                //TODO
                 intent.putExtra("event", ProfileActivity.eventList.get(position));//adapter.getEvents().get(position));
+                eventS = ProfileActivity.eventList.get(position);
+                intent.putExtra("activity", "events");
                 startActivity(intent);
             }
         })
         ;
     }
-
+public static Event eventS;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

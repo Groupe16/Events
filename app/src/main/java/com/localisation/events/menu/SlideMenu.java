@@ -75,7 +75,8 @@ public class SlideMenu {
             public void onItemClick(AdapterView<?> arg0, View view, int position,long id) {
 
                 Intent intent = new Intent(context, adapter.getAction(position));
-                intent.putExtra("user", user);
+                //intent.putExtra("user", user);
+                intent.putExtra("activity", MenuAdapter.activities[position]);
                 context.startActivity(intent);
 
             }

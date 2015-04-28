@@ -47,11 +47,36 @@ public class CreateEventActivity extends ActionBarActivity implements OnTaskComp
     private CharSequence menuTitle = "Menu";
     private CharSequence activityTitle = "Créer un evenement";
     private User user = null;
+    public static User userS;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
-        user = getIntent().getParcelableExtra("user");
+        //user = getIntent().getParcelableExtra("user");
+
+        if (getIntent().getStringExtra("activity").equals("main"))
+            user = MainActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("registration"))
+            user = RegistrationActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("explore"))
+            user = ExploreActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("create"))
+            user = CreateEventActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("events"))
+            user = EventsActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("invitations"))
+            user = InvitationsActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("interest"))
+            user = ExploreActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("profile"))
+            user = ProfileActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("maps"))
+            user = InvitationsMapActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("invitation"))
+            user = InvitationActivity.userS;
+        else if (getIntent().getStringExtra("activity").equals("event"))
+            user = EventActivity.userS;
         SlideMenu slideMenu = new SlideMenu(this, user);
         menuLayout = slideMenu.getMenuLayout();
         menuElementsList = slideMenu.getMenuElementsList();
@@ -204,7 +229,9 @@ public class CreateEventActivity extends ActionBarActivity implements OnTaskComp
         if(success)
         {
             Intent intent = new Intent(CreateEventActivity.this, InvitationsMapActivity.class);
-            intent.putExtra("user", user);
+            //intent.putExtra("user", user);
+            userS = user;
+            intent.putExtra("activity", "create");
             startActivity(intent);
         }
         else

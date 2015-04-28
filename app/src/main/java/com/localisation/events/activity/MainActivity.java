@@ -354,7 +354,9 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         else if(client_id != 0)
         {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-            intent.putExtra("user", myself);
+            //intent.putExtra("user", myself);
+            userS = myself;
+            intent.putExtra("activity", "main");
             startActivity(intent);
         }
         else
@@ -364,9 +366,13 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
 
     }
 
+    public static User userS;
+
     public void registrationClick(View view){
         Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
-        intent.putExtra("user", new User());
+        //intent.putExtra("user", new User());
+        userS = new User();
+        intent.putExtra("activity", "main");
         startActivity(intent);
     }
 
@@ -375,7 +381,9 @@ public class MainActivity extends ActionBarActivity implements OnTaskCompleted {
         if(success)
         {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-            intent.putExtra("user", myself);
+            //intent.putExtra("user", myself);
+            userS = myself;
+            intent.putExtra("activity", "main");
             startActivity(intent);
         }
         else
