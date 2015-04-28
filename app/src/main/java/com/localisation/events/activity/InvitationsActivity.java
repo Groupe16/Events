@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.localisation.events.R;
+import com.localisation.events.adapter.InvitationAdapter;
 import com.localisation.events.menu.SlideMenu;
 import com.localisation.events.model.User;
 
@@ -45,6 +46,10 @@ public class InvitationsActivity extends ActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_drawer);
 
+
+        final InvitationAdapter adapter = new InvitationAdapter(this, user);
+        final ListView listInvitation = (ListView) findViewById(R.id.invitationListView);
+        listInvitation.setAdapter(adapter);
 
     }
 

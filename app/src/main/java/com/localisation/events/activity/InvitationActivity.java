@@ -7,12 +7,18 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.localisation.events.R;
 import com.localisation.events.adapter.InvitationAdapter;
 import com.localisation.events.menu.SlideMenu;
+import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 //pour rédiger le message de l'invitation
 public class InvitationActivity extends ActionBarActivity {
@@ -45,10 +51,11 @@ public class InvitationActivity extends ActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_drawer);
 
-        final InvitationAdapter adapter = new InvitationAdapter(this, user);
-        final ListView listInvitation = (ListView) findViewById(R.id.invitationListView);
-        listInvitation.setAdapter(adapter);
-
+        ListView list = (ListView) findViewById(R.id.participantslistView);
+        List<String> invites = new ArrayList<>();
+        //TODO liste des invités
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, invites);
+        list.setAdapter(adapter);
 
     }
 
