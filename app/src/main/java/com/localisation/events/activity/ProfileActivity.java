@@ -35,7 +35,6 @@ import com.localisation.events.model.User;
 //pour afficher le profil de l'utilisateur
 public class ProfileActivity extends ActionBarActivity {
 
-    public static User myself = null;
     private DrawerLayout menuLayout; //Layout Principal
     private ListView menuElementsList; //Menu
     private ActionBarDrawerToggle menuToggle; //Gère l'ouverture et la fermeture du menu
@@ -79,8 +78,6 @@ public class ProfileActivity extends ActionBarActivity {
         longitude.setText(String.valueOf(user.getCoord().getLongitude()));
         TextView latitude = (TextView) findViewById(R.id.latitudeTextView);
         latitude.setText(String.valueOf(user.getCoord().getLatitude()));
-        TextView altitude = (TextView) findViewById(R.id.altitudeTextView);
-        altitude.setText(String.valueOf(user.getCoord().getAltitude()));
         TextView lastCxn = (TextView) findViewById(R.id.last_cxn_text);
         lastCxn.setText(String.valueOf(user.getLastConnection()));
         TextView firstName = (TextView) findViewById(R.id.first_name_text);
@@ -105,6 +102,12 @@ public class ProfileActivity extends ActionBarActivity {
 
     public void updateClick(View view){
         Intent intent = new Intent(ProfileActivity.this, RegistrationActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
+    public void createEventClick(View view){
+        Intent intent = new Intent(ProfileActivity.this, CreateEventActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
     }
