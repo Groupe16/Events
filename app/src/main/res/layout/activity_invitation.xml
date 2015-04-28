@@ -4,9 +4,48 @@
     android:id="@+id/menu_layout"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:fillViewport="false">
 
-<TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Ecrivez votre message :"
+                android:id="@+id/textView" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="40"
+                android:id="@+id/editText" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Envoyer"
+                android:id="@+id/button2" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/listView" />
+
+
+        </LinearLayout>
+    </ScrollView>
 
 
     <!-- The menu elements ListView. -->

@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.localisation.events.R;
 import com.localisation.events.menu.SlideMenu;
+import com.localisation.events.model.Theme;
 import com.localisation.events.model.User;
 
 //pour afficher une liste d'événements
@@ -44,6 +47,8 @@ public class EventsActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_drawer);
+
+
     }
 
 
@@ -101,5 +106,12 @@ public class EventsActivity extends ActionBarActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         menuToggle.onConfigurationChanged(newConfig);
+    }
+
+    public void saveTheme(View view){
+        String name = ((TextView) findViewById(R.id.name)).getText().toString();
+        String group = ((TextView) findViewById(R.id.group)).getText().toString();
+        
+        //TODO enregistre
     }
 }
