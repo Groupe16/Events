@@ -4,7 +4,7 @@
     android:id="@+id/menu_layout"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ScrollView
+    <!--ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/scrollView"
@@ -43,7 +43,13 @@
 
 
         </LinearLayout>
-    </ScrollView>
+    </ScrollView-->
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/eventsListView" />
+
 
 
     <!-- The menu elements ListView. -->
