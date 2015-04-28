@@ -45,7 +45,7 @@ public class CreateEventActivity extends ActionBarActivity implements OnTaskComp
     private ActionBarDrawerToggle menuToggle; //Gère l'ouverture et la fermeture du menu
 
     private CharSequence menuTitle = "Menu";
-    private CharSequence activityTitle = "Profil";
+    private CharSequence activityTitle = "Créer un evenement";
     private User user = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +67,11 @@ public class CreateEventActivity extends ActionBarActivity implements OnTaskComp
         getLocation();
 
         Spinner themeList = (Spinner) findViewById(R.id.themeSpinner);
-        List<Theme> themes = new ArrayList<>();
+        List<String> themes = new ArrayList<>();
         //TODO ajouter les theme
-        ArrayAdapter<Theme> adapter = new ArrayAdapter<Theme>(this, android.R.layout.simple_list_item_1, themes);
+        for (Theme t : ProfileActivity.interestList)
+            themes.add(t.getName());
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, themes);
         themeList.setAdapter(adapter);
     }
 
